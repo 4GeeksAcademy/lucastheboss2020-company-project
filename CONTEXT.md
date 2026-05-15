@@ -46,6 +46,100 @@ Commercial & Residential Service
 - Commercial properties
 - Townhomes and single‑family residences
 
-## Branding
+## Data Model
 
-This section includes mottos, brand colors, etc.
+1. Service
+Represents one of the services the company offers.
+
+Fields:
+
+id: string
+
+name: "pointing" | "caulking" | "waterproofing" | "cleaning" | "masonry-repair"
+
+basePrice: number
+
+2. JobOrder
+Represents a job requested by a client.
+
+Fields:
+
+id: string
+
+clientName: string
+
+propertyType: "residential" | "commercial"
+
+serviceId: string (references Service)
+
+price: number
+
+address: string
+
+date: string
+
+status: "pending" | "scheduled" | "completed"
+
+3. Employee
+Represents a worker.
+
+Fields:
+
+id: string
+
+name: string
+
+role: "mason" | "laborer" | "foreman"
+
+hourlyRate: number
+
+4. Assignment
+Represents which employees are assigned to which job.
+
+Fields:
+
+id: string
+
+jobId: string
+
+employeeId: string
+
+hoursWorked: number
+
+## Validation Rules
+
+1. Service
+
+basePrice must be > 0
+
+2. JobOrder
+
+clientName cannot be empty
+
+price must be >= the service’s basePrice
+
+status must be one of the allowed values
+
+propertyType must be "residential" or "commercial"
+
+3. Employee
+
+hourlyRate must be > 0
+
+4. Assignment
+
+hoursWorked must be >= 0
+
+## Reports to Generate
+
+1. Count jobs by service type
+
+2. Count jobs by property type (residential vs commercial)
+
+3. Total revenue from all jobs
+
+4. Average job price
+
+5. Total labor cost per job
+
+6. Employees with the most hours worked

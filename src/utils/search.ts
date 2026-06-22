@@ -15,7 +15,7 @@ export function binarySearch<T, K extends string | number>(
   items: T[],
   target: K,
   selector: (item: T) => K
-): T | undefined {
+): number {
   let left = 0;
   let right = items.length - 1;
 
@@ -24,7 +24,7 @@ export function binarySearch<T, K extends string | number>(
     const value = selector(items[middle]);
 
     if (value === target) {
-      return items[middle];
+      return middle;
     }
 
     if (value < target) {
@@ -34,5 +34,5 @@ export function binarySearch<T, K extends string | number>(
     }
   }
 
-  return undefined;
+  return -1;
 }

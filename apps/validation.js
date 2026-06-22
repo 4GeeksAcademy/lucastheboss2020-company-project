@@ -1,5 +1,5 @@
 const applicationForm = document.getElementById("applicationForm");
-const APPLICATION_ENDPOINT = "https://formspree.io/f/your-form-id";
+const APPLICATION_ENDPOINT = "https://formsubmit.co/ajax/contact@pabrestorationny.com";
 
 function getDictionary() {
   const lang = typeof window.getCurrentLanguage === "function" ? window.getCurrentLanguage() : "en";
@@ -126,6 +126,8 @@ if (applicationForm) {
       status.classList.add("text-gray-700");
 
       const formData = new FormData(applicationForm);
+      formData.append("_captcha", "false");
+      formData.append("_subject", "New Job Application - PAB Restoration");
       const response = await fetch(APPLICATION_ENDPOINT, {
         method: "POST",
         body: formData,

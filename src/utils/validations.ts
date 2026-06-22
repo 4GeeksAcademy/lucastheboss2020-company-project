@@ -32,7 +32,7 @@ export function validateService(service: Service): ValidationResult {
     errors.push(`Service ${service.id}: name must be a valid service type.`);
   }
 
-  if (service.basePrice <= 0) {
+  if (!Number.isFinite(service.basePrice) || service.basePrice <= 0) {
     errors.push(`Service ${service.id}: basePrice must be > 0.`);
   }
 
@@ -47,8 +47,10 @@ export function validateJobOrder(
   services: Service[]
 ): ValidationResult {
   const errors: string[] = [];
+  const normalizedClientName =
+    typeof job.clientName === "string" ? job.clientName.trim() : "";
 
-  if (job.clientName.trim().length === 0) {
+  if (normalizedClientName.length === 0) {
     errors.push(`JobOrder ${job.id}: clientName cannot be empty.`);
   }
 
@@ -78,7 +80,7 @@ export function validateJobOrder(
 export function validateEmployee(employee: Employee): ValidationResult {
   const errors: string[] = [];
 
-  if (employee.hourlyRate <= 0) {
+  if (!Number.isFinite(employee.hourlyRate) || employee.hourlyRate <= 0) {
     errors.push(`Employee ${employee.id}: hourlyRate must be > 0.`);
   }
 
@@ -95,7 +97,7 @@ export function validateAssignment(
 ): ValidationResult {
   const errors: string[] = [];
 
-  if (assignment.hoursWorked < 0) {
+  if (!Number.isFinite(assignment.hoursWorked) || assignment.hoursWorked < 0) {
     errors.push(`Assignment ${assignment.id}: hoursWorked must be >= 0.`);
   }
 

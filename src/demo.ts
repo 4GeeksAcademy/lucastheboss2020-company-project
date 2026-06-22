@@ -87,8 +87,8 @@ function runSearchExamples(): void {
   console.log("linearSearch pending job:", pendingJob);
 
   const jobsSortedById = sortBy(jobs, (job) => job.id);
-  const targetJob = binarySearch(jobsSortedById, "job-3", (job) => job.id);
-  console.log("binarySearch by id job-3:", targetJob);
+  const targetJobIndex = binarySearch(jobsSortedById, "job-3", (job) => job.id);
+  console.log("binarySearch index for id job-3:", targetJobIndex);
 }
 
 function runCollectionExamples(): void {

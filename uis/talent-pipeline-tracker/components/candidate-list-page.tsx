@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   STATUS_LABELS,
@@ -73,6 +73,7 @@ export default function CandidateListPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState(0);
+  const [searchInput, setSearchInput] = useState(() => searchParams.get("q") ?? "");
 
   const [createForm, setCreateForm] =
     useState<CandidateCreatePayload>(EMPTY_CREATE_FORM);
@@ -121,7 +122,7 @@ export default function CandidateListPage() {
       const stageMatch =
         filters.stage === "all" ? true : record.stage === filters.stage;
 
-      const q = filters.q.trim().toLowerCase();
+      const q = searchInput.toLowerCase();
       const searchMatch =
         q.length === 0
           ? true
@@ -130,9 +131,9 @@ export default function CandidateListPage() {
 
       return statusMatch && stageMatch && searchMatch;
     });
-  }, [filters, records]);
+  }, [filters, records, searchInput]);
 
-  function updateQuery(nextValues: Partial<CandidateFilters>) {
+  const updateQuery = useCallback((nextValues: Partial<CandidateFilters>) => {
     const params = new URLSearchParams(searchParams.toString());
     const next = { ...filters, ...nextValues };
 
@@ -148,15 +149,29 @@ export default function CandidateListPage() {
       params.set("stage", next.stage);
     }
 
-    if (next.q.trim().length === 0) {
+    if (next.q.length === 0) {
       params.delete("q");
     } else {
-      params.set("q", next.q.trim());
+      params.set("q", next.q);
     }
 
     const queryString = params.toString();
     router.replace(queryString ? `${pathname}?${queryString}` : pathname);
-  }
+  }, [filters, pathname, router, searchParams]);
+
+  useEffect(() => {
+    if (searchInput === filters.q) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      updateQuery({ q: searchInput });
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [filters.q, searchInput, updateQuery]);
 
   async function handleCreateSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -259,8 +274,8 @@ export default function CandidateListPage() {
             Search
             <input
               type="search"
-              value={filters.q}
-              onChange={(event) => updateQuery({ q: event.target.value })}
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
               placeholder="Name or email"
             />
           </label>

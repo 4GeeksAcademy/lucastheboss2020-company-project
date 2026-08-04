@@ -48,6 +48,13 @@ ai-engineering-project-template/
 3. **Add your CONTEXT**: copy the `CONTEXT-<company>.md` for your assigned company into the root as `CONTEXT.md`.
 4. **Read** `AGENTS.md` so you know which skills are available when working with AI.
 5. **Build** your milestone deliverables inside `apps/`, reusing `packages/shared-types` and `pipelines/data` as needed.
+6. **Run locally in Codespaces (npx)**:
+
+    ```bash
+    npx serve apps -l 3000
+    ```
+
+    Then open the forwarded port URL and navigate to `index.html` and `application.html`.
 
 ---
 

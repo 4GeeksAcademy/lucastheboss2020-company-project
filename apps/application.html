@@ -85,9 +85,9 @@
     <section class="border-b border-red-100 bg-gradient-to-br from-red-50 via-white to-red-100">
       <article class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:items-center">
         <header class="space-y-4">
-          <p class="inline-block rounded-full bg-red-100 px-4 py-1 text-sm font-semibold uppercase tracking-wide text-red-700">Careers</p>
-          <h1 class="text-4xl font-extrabold leading-tight text-red-800">Apply To Work With PAB Restoration</h1>
-          <p class="text-lg text-gray-700">Build your future with a New York restoration team focused on quality masonry, waterproofing, and long-term durability.</p>
+          <p class="inline-block rounded-full bg-red-100 px-4 py-1 text-sm font-semibold uppercase tracking-wide text-red-700">Digital Operations</p>
+          <h1 class="text-4xl font-extrabold leading-tight text-red-800">Project Intake and Validation Form</h1>
+          <p class="text-lg text-gray-700">Use this form to register services, job orders, employees, and assignments using the same data model PAB Restoration uses to run operations digitally.</p>
         </header>
 
         <figure class="rounded-2xl border border-red-200 bg-white p-3 shadow-md">
@@ -100,67 +100,173 @@
       </article>
     </section>
 
-    <section class="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+    <section class="mx-auto max-w-5xl px-4 py-14 sm:px-6">
       <article class="rounded-2xl border border-red-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 class="text-2xl font-bold text-red-800">Apply Now</h2>
-        <p class="mt-2 text-gray-700">Please complete all fields below and submit your application.</p>
+        <h2 class="text-2xl font-bold text-red-800">Company Data Capture</h2>
+        <p class="mt-2 text-gray-700">Complete every field to validate business rules from the official context. Required references: JobOrder.serviceId must match Service.id, Assignment.jobId must match JobOrder.id, and Assignment.employeeId must match Employee.id.</p>
 
         <form id="applicationForm" class="mt-8 space-y-6" novalidate>
-          <section class="grid gap-5 md:grid-cols-2">
-            <p>
-              <label for="fullName" class="mb-2 block text-sm font-semibold text-gray-700">Full Name</label>
-              <input id="fullName" name="fullName" type="text" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
-              <span id="fullNameError" class="mt-1 block text-sm text-red-700"></span>
-            </p>
+          <fieldset class="rounded-xl border border-red-200 p-5">
+            <legend class="px-2 text-base font-bold text-red-800">Service</legend>
+            <section class="grid gap-5 md:grid-cols-3">
+              <p>
+                <label for="serviceId" class="mb-2 block text-sm font-semibold text-gray-700">id</label>
+                <input id="serviceId" name="serviceId" type="text" aria-describedby="serviceIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="serviceIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
 
-            <p>
-              <label for="phone" class="mb-2 block text-sm font-semibold text-gray-700">Phone Number</label>
-              <input id="phone" name="phone" type="tel" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
-              <span id="phoneError" class="mt-1 block text-sm text-red-700"></span>
-            </p>
+              <p>
+                <label for="serviceName" class="mb-2 block text-sm font-semibold text-gray-700">name</label>
+                <select id="serviceName" name="serviceName" aria-describedby="serviceNameError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required>
+                  <option value="">Select service</option>
+                  <option value="pointing">pointing</option>
+                  <option value="caulking">caulking</option>
+                  <option value="waterproofing">waterproofing</option>
+                  <option value="cleaning">cleaning</option>
+                  <option value="masonry-repair">masonry-repair</option>
+                </select>
+                <span id="serviceNameError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
 
-            <p>
-              <label for="email" class="mb-2 block text-sm font-semibold text-gray-700">Email</label>
-              <input id="email" name="email" type="email" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
-              <span id="emailError" class="mt-1 block text-sm text-red-700"></span>
-            </p>
+              <p>
+                <label for="serviceBasePrice" class="mb-2 block text-sm font-semibold text-gray-700">basePrice</label>
+                <input id="serviceBasePrice" name="serviceBasePrice" type="number" min="0.01" step="0.01" aria-describedby="serviceBasePriceError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="serviceBasePriceError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+            </section>
+          </fieldset>
 
-            <p>
-              <label for="address" class="mb-2 block text-sm font-semibold text-gray-700">Address</label>
-              <input id="address" name="address" type="text" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
-              <span id="addressError" class="mt-1 block text-sm text-red-700"></span>
-            </p>
+          <fieldset class="rounded-xl border border-red-200 p-5">
+            <legend class="px-2 text-base font-bold text-red-800">JobOrder</legend>
+            <section class="grid gap-5 md:grid-cols-2">
+              <p>
+                <label for="jobOrderId" class="mb-2 block text-sm font-semibold text-gray-700">id</label>
+                <input id="jobOrderId" name="jobOrderId" type="text" aria-describedby="jobOrderIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="jobOrderIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
 
-            <p>
-              <label for="position" class="mb-2 block text-sm font-semibold text-gray-700">Position Applying For</label>
-              <input id="position" name="position" type="text" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
-              <span id="positionError" class="mt-1 block text-sm text-red-700"></span>
-            </p>
+              <p>
+                <label for="clientName" class="mb-2 block text-sm font-semibold text-gray-700">clientName</label>
+                <input id="clientName" name="clientName" type="text" aria-describedby="clientNameError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="clientNameError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
 
-            <p>
-              <label for="experience" class="mb-2 block text-sm font-semibold text-gray-700">Years of Experience</label>
-              <input id="experience" name="experience" type="number" min="0" max="60" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
-              <span id="experienceError" class="mt-1 block text-sm text-red-700"></span>
-            </p>
+              <p>
+                <label for="propertyType" class="mb-2 block text-sm font-semibold text-gray-700">propertyType</label>
+                <select id="propertyType" name="propertyType" aria-describedby="propertyTypeError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required>
+                  <option value="">Select property type</option>
+                  <option value="residential">residential</option>
+                  <option value="commercial">commercial</option>
+                </select>
+                <span id="propertyTypeError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="jobServiceId" class="mb-2 block text-sm font-semibold text-gray-700">serviceId</label>
+                <input id="jobServiceId" name="jobServiceId" type="text" aria-describedby="jobServiceIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="jobServiceIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="jobPrice" class="mb-2 block text-sm font-semibold text-gray-700">price</label>
+                <input id="jobPrice" name="jobPrice" type="number" min="0" step="0.01" aria-describedby="jobPriceError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="jobPriceError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="jobAddress" class="mb-2 block text-sm font-semibold text-gray-700">address</label>
+                <input id="jobAddress" name="jobAddress" type="text" aria-describedby="jobAddressError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="jobAddressError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="jobDate" class="mb-2 block text-sm font-semibold text-gray-700">date</label>
+                <input id="jobDate" name="jobDate" type="date" aria-describedby="jobDateError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="jobDateError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="jobStatus" class="mb-2 block text-sm font-semibold text-gray-700">status</label>
+                <select id="jobStatus" name="jobStatus" aria-describedby="jobStatusError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required>
+                  <option value="">Select status</option>
+                  <option value="pending">pending</option>
+                  <option value="scheduled">scheduled</option>
+                  <option value="completed">completed</option>
+                </select>
+                <span id="jobStatusError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+            </section>
+          </fieldset>
+
+          <fieldset class="rounded-xl border border-red-200 p-5">
+            <legend class="px-2 text-base font-bold text-red-800">Employee</legend>
+            <section class="grid gap-5 md:grid-cols-2">
+              <p>
+                <label for="employeeId" class="mb-2 block text-sm font-semibold text-gray-700">id</label>
+                <input id="employeeId" name="employeeId" type="text" aria-describedby="employeeIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="employeeIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="employeeName" class="mb-2 block text-sm font-semibold text-gray-700">name</label>
+                <input id="employeeName" name="employeeName" type="text" aria-describedby="employeeNameError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="employeeNameError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="employeeRole" class="mb-2 block text-sm font-semibold text-gray-700">role</label>
+                <select id="employeeRole" name="employeeRole" aria-describedby="employeeRoleError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required>
+                  <option value="">Select role</option>
+                  <option value="mason">mason</option>
+                  <option value="laborer">laborer</option>
+                  <option value="foreman">foreman</option>
+                </select>
+                <span id="employeeRoleError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="employeeHourlyRate" class="mb-2 block text-sm font-semibold text-gray-700">hourlyRate</label>
+                <input id="employeeHourlyRate" name="employeeHourlyRate" type="number" min="0.01" step="0.01" aria-describedby="employeeHourlyRateError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="employeeHourlyRateError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+            </section>
+          </fieldset>
+
+          <fieldset class="rounded-xl border border-red-200 p-5">
+            <legend class="px-2 text-base font-bold text-red-800">Assignment</legend>
+            <section class="grid gap-5 md:grid-cols-2">
+              <p>
+                <label for="assignmentId" class="mb-2 block text-sm font-semibold text-gray-700">id</label>
+                <input id="assignmentId" name="assignmentId" type="text" aria-describedby="assignmentIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="assignmentIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="assignmentJobId" class="mb-2 block text-sm font-semibold text-gray-700">jobId</label>
+                <input id="assignmentJobId" name="assignmentJobId" type="text" aria-describedby="assignmentJobIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="assignmentJobIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="assignmentEmployeeId" class="mb-2 block text-sm font-semibold text-gray-700">employeeId</label>
+                <input id="assignmentEmployeeId" name="assignmentEmployeeId" type="text" aria-describedby="assignmentEmployeeIdError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="assignmentEmployeeIdError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+
+              <p>
+                <label for="hoursWorked" class="mb-2 block text-sm font-semibold text-gray-700">hoursWorked</label>
+                <input id="hoursWorked" name="hoursWorked" type="number" min="0" step="0.25" aria-describedby="hoursWorkedError" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required />
+                <span id="hoursWorkedError" role="alert" class="mt-1 block text-sm text-red-700"></span>
+              </p>
+            </section>
+          </fieldset>
+
+          <section class="flex flex-wrap gap-3">
+            <button type="submit" class="inline-flex rounded bg-brandRed px-6 py-3 font-semibold text-white transition hover:bg-red-700">Validate and Submit</button>
+            <button id="clearFormButton" type="reset" class="inline-flex rounded border border-red-300 px-6 py-3 font-semibold text-red-700 transition hover:bg-red-50">Clear Form</button>
           </section>
 
-          <p>
-            <label for="resume" class="mb-2 block text-sm font-semibold text-gray-700">Upload Resume</label>
-            <input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-700 file:mr-4 file:rounded file:border-0 file:bg-red-100 file:px-3 file:py-2 file:font-semibold file:text-red-800" required />
-            <span id="resumeError" class="mt-1 block text-sm text-red-700"></span>
-          </p>
-
-          <p>
-            <label for="message" class="mb-2 block text-sm font-semibold text-gray-700">Short Message / Cover Letter</label>
-            <textarea id="message" name="message" rows="6" class="w-full rounded-lg border border-red-200 px-4 py-3 text-gray-800 outline-none ring-red-300 transition focus:ring-2" required></textarea>
-            <span id="messageError" class="mt-1 block text-sm text-red-700"></span>
-          </p>
-
-          <p>
-            <button type="submit" class="inline-flex rounded bg-brandRed px-6 py-3 font-semibold text-white transition hover:bg-red-700">Submit Application</button>
-          </p>
-
-          <output id="formStatus" class="block text-sm font-semibold text-green-700"></output>
+          <output id="formStatus" role="status" aria-live="polite" class="block text-sm font-semibold text-green-700"></output>
         </form>
       </article>
     </section>

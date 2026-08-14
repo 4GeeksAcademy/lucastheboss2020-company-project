@@ -24,19 +24,17 @@ This repository is the **starter template** for transversal projects. You will w
 ```text
 ai-engineering-project-template/
 ├── README.md                 # This file
-├── AGENTS.md                 # Index for AI agents: which skills exist and when to use them (you will add it in the future)
-├── CONTEXT.md                # Your company context (Brasaland | TrackFlow | Nexova) — add after assignment
-├── apps/                     # Your applications (web app, API, dashboards)
-├── packages/
-│   └── shared-types/         # Shared TypeScript/JSON types used across apps
-├── pipelines/
-│   └── data/                 # ETL, ingestion, or data pipeline configs/scripts
-└── skills/                   # Agent skills (SKILL.md + optional examples, scripts, templates)
-    ├── research/
-    ├── data-analysis/
-    ├── web-scraping/
-    ├── code-review/
-    └── math-reasoning/
+├── AGENTS.md                 # Agent operating protocol for this repository
+├── CONTEXT.md                # Company business context
+├── memory-bank/              # Persistent project context for agents and humans
+├── .agents/rules/            # Always-active agent development rules
+├── apps/                     # Legacy/static milestone artifacts
+├── uis/
+│   ├── website/              # Public Next.js + TypeScript app
+│   └── backoffice/           # Internal Next.js + TypeScript app
+├── services/                 # API/backend-only area for current and future services
+├── src/                      # Canonical TypeScript business logic from Milestone 2
+└── skills/                   # Reusable agent skills (SKILL.md + examples/resources)
 ```
 
 ---
@@ -46,8 +44,11 @@ ai-engineering-project-template/
 1. **Fork** this repository to your GitHub account.
 2. **Clone** your fork (or open in GitHub Codespaces).
 3. **Add your CONTEXT**: copy the `CONTEXT-<company>.md` for your assigned company into the root as `CONTEXT.md`.
-4. **Read** `AGENTS.md` so you know which skills are available when working with AI.
-5. **Build** your milestone deliverables inside `apps/`, reusing `packages/shared-types` and `pipelines/data` as needed.
+4. **Read** `AGENTS.md` and `.agents/rules/` before making changes.
+5. **Read** all files in `memory-bank/` at the start of each working session.
+6. **Build** public and internal UIs inside `uis/`.
+7. **Keep** API and backend work inside `services/`.
+8. **Reuse** business logic from `src/` by import instead of duplication.
 
 ---
 

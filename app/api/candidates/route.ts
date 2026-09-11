@@ -8,12 +8,16 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as CandidateWriteInput;
-  const result = createCandidate(body);
+  try {
+    const body = (await request.json()) as CandidateWriteInput;
+    const result = createCandidate(body);
 
-  if (!result.candidate) {
-    return NextResponse.json({ error: result.errors?.join(" ") ?? "Candidate could not be created." }, { status: 400 });
+    if (!result.candidate) {
+      return NextResponse.json({ error: result.errors?.join(" ") ?? "Candidate could not be created." }, { status: 400 });
+    }
+
+    return NextResponse.json(result.candidate, { status: 201 });
+  } catch {
+    return NextResponse.json({ error: "Candidate request payload is invalid." }, { status: 400 });
   }
-
-  return NextResponse.json(result.candidate, { status: 201 });
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ContactForm from "./ContactForm";
 
 const services = [
   {
@@ -15,11 +16,29 @@ const services = [
   },
 ];
 
-const serviceOptions = ["Warehousing", "Last mile", "Reverse logistics"];
-
 export default function WebsiteHome() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "TrackFlow",
+        description: "Warehouse management and last-mile deliveries for e-commerce",
+        url: "https://trackflow.com",
+        foundingDate: "2009",
+        address: [
+          { "@type": "PostalAddress", addressCountry: "US", addressLocality: "Los Angeles", addressRegion: "California" },
+          { "@type": "PostalAddress", addressCountry: "ES", addressLocality: "Zaragoza", addressRegion: "Aragón" },
+        ],
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+1-213-555-0147",
+          contactType: "sales",
+          availableLanguage: ["Spanish", "English"],
+        },
+        sameAs: ["https://linkedin.com/company/trackflow"],
+        areaServed: [{ "@type": "Country", name: "United States" }, { "@type": "Country", name: "Spain" }],
+      }) }} />
       <header className="panel" style={{ marginBottom: "1rem" }}>
         <nav className="actions" aria-label="TrackFlow website navigation">
           <strong className="brand">TrackFlow</strong>
@@ -87,41 +106,7 @@ export default function WebsiteHome() {
         <p>Zaragoza: <a href="tel:+34976123456">+34 976 123 456</a></p>
         </article>
 
-        <form id="contact-form" className="panel" aria-label="TrackFlow information request form">
-          <h2>Request information</h2>
-          <div className="form-grid">
-            <label className="field"><span>Company name</span><input name="companyName" minLength={2} required /></label>
-            <label className="field"><span>Contact person</span><input name="contactPerson" required /></label>
-            <label className="field"><span>Corporate email</span><input name="corporateEmail" type="email" required /></label>
-            <label className="field"><span>Phone</span><input name="phone" placeholder="+1 213 555 0147" required /></label>
-            <label className="field"><span>Company website</span><input name="companyWebsite" type="url" placeholder="https://example.com" /></label>
-            <label className="field"><span>Main operating country</span><select name="operatingCountry" required><option>United States</option><option>Spain</option><option>Both</option><option>Other</option></select></label>
-            <label className="field"><span>Product type</span><select name="productType" required><option>Fashion</option><option>Electronics</option><option>Cosmetics</option><option>Food</option><option>Other</option></select></label>
-            <label className="field"><span>Estimated monthly shipping volume</span><select name="monthlyVolume" required><option>0-100</option><option>101-500</option><option>501-2000</option><option>2000+</option><option>Not sure</option></select></label>
-          </div>
-
-          <fieldset className="field" style={{ marginTop: "1rem" }}>
-            <legend>Services of interest</legend>
-            <div className="checkboxes">
-              {serviceOptions.map((service) => (
-                <label key={service}><input type="checkbox" name="servicesOfInterest" />{service}</label>
-              ))}
-            </div>
-          </fieldset>
-
-          <fieldset className="field" style={{ marginTop: "1rem" }}>
-            <legend>Do you currently work with another 3PL?</legend>
-            <div className="checkboxes">
-              {['Yes', 'No', 'Evaluating options'].map((option) => (
-                <label key={option}><input type="radio" name="current3pl" />{option}</label>
-              ))}
-            </div>
-          </fieldset>
-
-          <label className="field" style={{ marginTop: "1rem" }}><span>Comments or specific needs</span><textarea name="comments" maxLength={500} /></label>
-          <label className="field" style={{ marginTop: "1rem" }}><span><input name="privacyPolicy" type="checkbox" required style={{ minHeight: "auto", width: "auto" }} /> I accept the privacy policy</span></label>
-          <button type="submit" style={{ marginTop: "1rem" }}>Submit request</button>
-        </form>
+        <ContactForm />
       </section>
 
       <footer className="panel" style={{ marginTop: "1rem" }}>

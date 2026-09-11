@@ -223,6 +223,11 @@ a:focus-visible {
   color: #1e3a8a;
 }
 
+.message.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 .field {
   display: grid;
   grid-gap: 0.35rem;

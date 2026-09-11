@@ -16,10 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/candidates/page.js"
     ],
-    "/uis/backoffice/page": [
+    "/uis/website/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/uis/backoffice/page.js"
+      "static/chunks/app/uis/website/page.js"
+    ],
+    "/candidates/new/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/candidates/new/page.js"
     ]
   }
 }

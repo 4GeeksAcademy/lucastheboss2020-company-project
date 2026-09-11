@@ -17,3 +17,22 @@
 - Candidate API routes live under `app/api/candidates` and support `GET`, `POST`, `PUT`, `PATCH`, and note deletion.
 - Public route `/uis/website` imports its UI from `uis/website`.
 - Internal route `/uis/backoffice` imports its UI from `uis/backoffice` and displays company-relevant lead pipeline output on screen.
+
+## Product Requirements
+
+- The public landing page order is Header, Hero, Services, Coverage, Why TrackFlow, Contact, and Footer.
+- The lead form captures company identity, operating market, product type, monthly volume, requested services, current 3PL status, comments, and privacy acceptance.
+- Form validation must use the exact messages in `CONTEXT.md`, including the phone country-code rule, at-least-one service rule, 500-character comment limit, and low-volume warning.
+- Valid public submissions create a `new` candidate at the `intake` stage assigned to the Commercial Desk.
+- The required Organization Schema.org markup belongs on the public landing page.
+
+## Workflow Conventions
+
+- Keep `app/uis/*` route files as thin importers; implement public and backoffice behavior under `uis/website` and `uis/backoffice`.
+- Reuse `src/candidates/types.ts`, `src/candidates/api.ts`, and `src/utils/validations.ts` instead of creating duplicate lead contracts.
+- Before a milestone commit, check the relevant route/API, run `npm run typecheck`, run `npm run build` for App Router changes, and inspect `git status --short`.
+
+## Progress
+
+- Milestones 1-3 established the TrackFlow domain model, candidate API, CRUD screens, and initial website/backoffice routes.
+- Milestone 4 completes the public form submission workflow, replaces the unrelated talent tracker with the logistics lead pipeline, and formalizes agent memory/workflow documentation.

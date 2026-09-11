@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import WebsiteHome from "../uis/website/WebsiteHome";
 
 export default function HomePage() {
-  redirect("/candidates");
+  return <WebsiteHome />;
 }

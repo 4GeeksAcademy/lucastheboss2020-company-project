@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import "./globals.css";
+import Navigation from "./Navigation";
 
 export const metadata: Metadata = {
   title: "TrackFlow Lead Candidates",
@@ -11,19 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <header className="topbar">
-          <Link className="brand" href="/candidates">
-            TrackFlow Candidates
-          </Link>
-          <nav className="actions" aria-label="Primary navigation">
-            <Link className="button secondary" href="/candidates">
-              Pipeline
-            </Link>
-            <Link className="button" href="/candidates/new">
-              New candidate
-            </Link>
-          </nav>
-        </header>
+        <Navigation />
         <main className="shell">{children}</main>
       </body>
     </html>

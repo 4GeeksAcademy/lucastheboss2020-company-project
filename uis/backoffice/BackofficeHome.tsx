@@ -1,92 +1,86 @@
+"use client";
+
 import Link from "next/link";
-import type { TrackerRecordListResponse } from "../../src/candidates/types";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { startTransition, useDeferredValue, useEffect, useState } from "react";
+import { fetchCandidates } from "../../src/candidates/api";
+import type { CandidateListResponse } from "../../src/candidates/types";
+import { CANDIDATE_STAGES, CANDIDATE_STATUSES } from "../../src/candidates/types";
 
-const TRACKER_RECORDS_URL = "https://playground.4geeks.com/tracker/api/v1/records";
-const PAGE_SIZE = 20;
-
-type SearchParams = Record<string, string | string[] | undefined>;
-
-function firstValue(value: string | string[] | undefined): string {
-  return typeof value === "string" ? value : "";
+function formatServices(services: string[]): string {
+  return services.map((service) => service.replace(/-/g, " ")).join(", ");
 }
 
-function pageNumber(value: string): number {
-  const page = Number(value);
-  return Number.isInteger(page) && page > 0 ? page : 1;
-}
+export default function BackofficeHome() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const deferredQuery = useDeferredValue(query);
+  const [result, setResult] = useState<CandidateListResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-async function fetchTrackerRecords(searchParams: SearchParams): Promise<TrackerRecordListResponse> {
-  const query = new URLSearchParams({ page: String(pageNumber(firstValue(searchParams.page))), limit: String(PAGE_SIZE) });
-
-  for (const parameter of ["status", "stage", "search"] as const) {
-    const value = firstValue(searchParams[parameter]).trim();
-    if (value) query.set(parameter, value);
+  function updateParam(key: string, value: string) {
+    const nextParams = new URLSearchParams(searchParams.toString());
+    if (!value || value === "all") nextParams.delete(key);
+    else nextParams.set(key, value);
+    if (key !== "page") nextParams.delete("page");
+    startTransition(() => router.replace(`${pathname}?${nextParams.toString()}`));
   }
 
-  const response = await fetch(`${TRACKER_RECORDS_URL}?${query}`, { cache: "no-store" });
-  if (!response.ok) throw new Error("Talent pipeline records are unavailable.");
-  return response.json() as Promise<TrackerRecordListResponse>;
-}
+  useEffect(() => {
+    updateParam("q", deferredQuery.trim());
+  }, [deferredQuery]);
 
-export default async function BackofficeHome({ searchParams }: { searchParams: SearchParams }) {
-  const records = await fetchTrackerRecords(searchParams);
-  const search = firstValue(searchParams.search);
-  const status = firstValue(searchParams.status);
-  const stage = firstValue(searchParams.stage);
-  const page = pageNumber(firstValue(searchParams.page));
-  const totalPages = Math.max(1, Math.ceil(records.total / records.limit));
+  useEffect(() => {
+    let ignore = false;
+    setLoading(true);
+    setError("");
+    fetchCandidates(`?${searchParams.toString()}`)
+      .then((data) => { if (!ignore) setResult(data); })
+      .catch((fetchError: Error) => { if (!ignore) setError(fetchError.message); })
+      .finally(() => { if (!ignore) setLoading(false); });
+    return () => { ignore = true; };
+  }, [searchParams]);
 
   return (
     <section>
       <header className="page-header">
-        <span className="badge green">Talent Pipeline Tracker</span>
-        <h1>Candidate backoffice</h1>
-        <p>Search and review live talent-pipeline records by candidate, recruitment status, and pipeline stage.</p>
+        <span className="badge green">TrackFlow commercial operations</span>
+        <h1>Lead candidate backoffice</h1>
+        <p>Review e-commerce companies requesting warehouse management, last-mile delivery, or reverse logistics support.</p>
         <div className="actions">
-          <Link className="button secondary" href="/candidates">TrackFlow lead pipeline</Link>
-          <Link className="button secondary" href="/uis/website">View public website</Link>
+          <Link className="button secondary" href="/uis/website#contact-form">View public lead form</Link>
+          <Link className="button" href="/candidates/new">Add lead manually</Link>
         </div>
       </header>
 
-      <form className="filters panel" action="/uis/backoffice">
-        <div className="field">
-          <label htmlFor="search">Search</label>
-          <input defaultValue={search} id="search" name="search" placeholder="Name, email, or position" type="search" />
-        </div>
-        <div className="field">
-          <label htmlFor="status">Status</label>
-          <input defaultValue={status} id="status" name="status" placeholder="e.g. active" />
-        </div>
-        <div className="field">
-          <label htmlFor="stage">Stage</label>
-          <input defaultValue={stage} id="stage" name="stage" placeholder="e.g. interview" />
-        </div>
-        <button type="submit">Search records</button>
-      </form>
-
-      <section className="candidate-grid" aria-label="Talent pipeline summary">
-        <article className="panel">
-          <h2>Matching records</h2>
-          <p><strong>{records.total}</strong> candidates found</p>
-          <p>Page {records.page} of {totalPages}</p>
-        </article>
-      </section>
-
-      <section className="panel" style={{ marginTop: "1rem" }}>
-        <h2>Candidate focus list</h2>
-        {records.data.length === 0 && <p>No candidates match the current search.</p>}
-        <ul>
-          {records.data.map((candidate) => (
-            <li key={candidate.id}>
-              <strong>{candidate.full_name}</strong> · {candidate.position} · {candidate.status} · {candidate.stage} · {candidate.experience_years ?? "Unknown"} years experience
-            </li>
-          ))}
-        </ul>
-        <div className="actions">
-          {page > 1 && <Link className="button secondary" href={`/uis/backoffice?${new URLSearchParams({ ...(search && { search }), ...(status && { status }), ...(stage && { stage }), page: String(page - 1) })}`}>Previous</Link>}
-          {page < totalPages && <Link className="button secondary" href={`/uis/backoffice?${new URLSearchParams({ ...(search && { search }), ...(status && { status }), ...(stage && { stage }), page: String(page + 1) })}`}>Next</Link>}
+      <section className="panel" aria-label="Lead candidate filters">
+        <div className="filters">
+          <label className="field"><span>Search by company or email</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="GlowCart or aisha@glowcart.com" /></label>
+          <label className="field"><span>Status</span><select value={searchParams.get("status") ?? "all"} onChange={(event) => updateParam("status", event.target.value)}><option value="all">All statuses</option>{CANDIDATE_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}</select></label>
+          <label className="field"><span>Stage</span><select value={searchParams.get("stage") ?? "all"} onChange={(event) => updateParam("stage", event.target.value)}><option value="all">All stages</option>{CANDIDATE_STAGES.map((stage) => <option key={stage} value={stage}>{stage}</option>)}</select></label>
         </div>
       </section>
+
+      {loading && <p className="message loading">Loading TrackFlow lead candidates...</p>}
+      {error && <p className="message error" role="alert">{error}</p>}
+      {!loading && result?.total === 0 && <p className="message">No lead candidates match the current filters.</p>}
+      {result && <p className="message" aria-live="polite"><strong>{result.total}</strong> lead candidates found. Page {result.page} of {result.totalPages}.</p>}
+
+      <section className="candidate-grid" aria-live="polite">
+        {result?.data.map((candidate) => (
+          <Link className="candidate-card" href={`/candidates/${candidate.id}`} key={candidate.id}>
+            <div className="meta-row"><span className="badge blue">{candidate.status}</span><span className="badge green">{candidate.stage}</span><span className="badge">{candidate.operatingCountry}</span></div>
+            <div><h2>{candidate.companyName}</h2><p>{candidate.contactPerson} · {candidate.corporateEmail}</p></div>
+            <p>{candidate.productType} e-commerce · {candidate.monthlyVolume} shipments/month</p>
+            <p>{formatServices(candidate.servicesOfInterest)}</p>
+          </Link>
+        ))}
+      </section>
+
+      {result && result.totalPages > 1 && <nav className="actions" aria-label="Lead candidate pages" style={{ marginTop: "1rem" }}><button className="secondary" disabled={result.page === 1} onClick={() => updateParam("page", String(result.page - 1))}>Previous</button><span className="badge">Page {result.page} of {result.totalPages}</span><button className="secondary" disabled={result.page === result.totalPages} onClick={() => updateParam("page", String(result.page + 1))}>Next</button></nav>}
     </section>
   );
 }

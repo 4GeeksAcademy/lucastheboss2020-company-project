@@ -1,0 +1,33 @@
+{
+  "name": "trackflow-company-project",
+  "version": "1.0.0",
+  "description": "TrackFlow public website and lead-candidate management app",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "next dev",
+    "typecheck": "tsc --noEmit",
+    "build": "next build",
+    "demo": "ts-node src/demo.ts"
+  },
+  "keywords": [
+    "logistics",
+    "trackflow",
+    "validation",
+    "typescript"
+  ],
+  "author": "TrackFlow Team",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}

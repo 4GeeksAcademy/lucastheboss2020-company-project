@@ -1,0 +1,6 @@
+{
+  "/candidates/page": "app/candidates/page.js",
+  "/uis/backoffice/page": "app/uis/backoffice/page.js",
+  "/api/candidates/route": "app/api/candidates/route.js",
+  "/page": "app/page.js"
+}

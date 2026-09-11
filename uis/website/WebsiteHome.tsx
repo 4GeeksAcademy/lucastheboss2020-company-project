@@ -1,0 +1,132 @@
+import Link from "next/link";
+
+const services = [
+  {
+    title: "Warehouse Management",
+    items: ["Storage, picking and packing", "Real-time inventory", "We operate warehouses in Los Angeles and Zaragoza"],
+  },
+  {
+    title: "Last-Mile Deliveries",
+    items: ["Certified carrier network in both countries", "Unified shipment tracking", "Incident and returns management"],
+  },
+  {
+    title: "Reverse Logistics",
+    items: ["Complete returns management", "Inspection and reconditioning", "Integration with your sales platform"],
+  },
+];
+
+const serviceOptions = ["Warehousing", "Last mile", "Reverse logistics"];
+
+export default function WebsiteHome() {
+  return (
+    <>
+      <header className="panel" style={{ marginBottom: "1rem" }}>
+        <nav className="actions" aria-label="TrackFlow website navigation">
+          <strong className="brand">TrackFlow</strong>
+          <a href="#home">Home</a>
+          <a href="#services">Services</a>
+          <a href="#coverage">Coverage</a>
+          <a href="#contact">Contact</a>
+          <Link className="button secondary" href="/uis/backoffice">Backoffice</Link>
+        </nav>
+      </header>
+
+      <section id="home">
+        <header className="page-header">
+          <span className="badge blue">Los Angeles + Zaragoza</span>
+          <h1>Logistics that scales with your e-commerce</h1>
+          <p>
+            Warehouse management, last-mile deliveries, and reverse logistics in the United States and Spain. Over 15 years helping fashion, electronics, and cosmetics brands grow without worrying about operations.
+          </p>
+          <div className="actions">
+            <a className="button" href="#contact-form">Request information</a>
+            <a className="button secondary" href="#services">View services</a>
+          </div>
+        </header>
+      </section>
+
+      <section id="services" className="candidate-grid" aria-labelledby="services-heading">
+        <h2 id="services-heading" style={{ gridColumn: "1 / -1" }}>Services</h2>
+        {services.map((service) => (
+          <article className="panel" key={service.title}>
+            <h3>{service.title}</h3>
+            <ul>
+              {service.items.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </article>
+        ))}
+      </section>
+
+      <section id="coverage" className="detail-grid" style={{ marginTop: "1rem" }} aria-labelledby="coverage-heading">
+        <article className="panel">
+          <h2 id="coverage-heading">United States</h2>
+          <p>Warehouse in Los Angeles with national coverage through UPS, FedEx, and DHL.</p>
+        </article>
+        <article className="panel">
+          <h2>Spain</h2>
+          <p>Warehouse in Zaragoza with peninsular and island coverage through MRW, SEUR, and DHL.</p>
+        </article>
+      </section>
+
+      <section id="why-trackflow" className="panel" style={{ marginTop: "1rem" }} aria-labelledby="why-heading">
+        <h2 id="why-heading">Why TrackFlow</h2>
+        <ul>
+          <li>Binational operation with own infrastructure in the United States and Spain.</li>
+          <li>More than 130 professionals dedicated to e-commerce logistics.</li>
+          <li>Own technology for total inventory visibility.</li>
+          <li>Specialization in fashion, electronics, and cosmetics brands.</li>
+        </ul>
+      </section>
+
+      <section id="contact" className="detail-grid" style={{ marginTop: "1rem" }} aria-labelledby="contact-heading">
+        <article className="panel">
+        <h2 id="contact-heading">Contact</h2>
+          <p>Tell us about your monthly volume, product category, countries, and services of interest. Miguel Torres and the commercial team will review your request.</p>
+        <p>Email: <a href="mailto:comercial@trackflow.com">comercial@trackflow.com</a></p>
+        <p>Los Angeles: <a href="tel:+12135550147">+1 213 555 0147</a></p>
+        <p>Zaragoza: <a href="tel:+34976123456">+34 976 123 456</a></p>
+        </article>
+
+        <form id="contact-form" className="panel" aria-label="TrackFlow information request form">
+          <h2>Request information</h2>
+          <div className="form-grid">
+            <label className="field"><span>Company name</span><input name="companyName" minLength={2} required /></label>
+            <label className="field"><span>Contact person</span><input name="contactPerson" required /></label>
+            <label className="field"><span>Corporate email</span><input name="corporateEmail" type="email" required /></label>
+            <label className="field"><span>Phone</span><input name="phone" placeholder="+1 213 555 0147" required /></label>
+            <label className="field"><span>Company website</span><input name="companyWebsite" type="url" placeholder="https://example.com" /></label>
+            <label className="field"><span>Main operating country</span><select name="operatingCountry" required><option>United States</option><option>Spain</option><option>Both</option><option>Other</option></select></label>
+            <label className="field"><span>Product type</span><select name="productType" required><option>Fashion</option><option>Electronics</option><option>Cosmetics</option><option>Food</option><option>Other</option></select></label>
+            <label className="field"><span>Estimated monthly shipping volume</span><select name="monthlyVolume" required><option>0-100</option><option>101-500</option><option>501-2000</option><option>2000+</option><option>Not sure</option></select></label>
+          </div>
+
+          <fieldset className="field" style={{ marginTop: "1rem" }}>
+            <legend>Services of interest</legend>
+            <div className="checkboxes">
+              {serviceOptions.map((service) => (
+                <label key={service}><input type="checkbox" name="servicesOfInterest" />{service}</label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="field" style={{ marginTop: "1rem" }}>
+            <legend>Do you currently work with another 3PL?</legend>
+            <div className="checkboxes">
+              {['Yes', 'No', 'Evaluating options'].map((option) => (
+                <label key={option}><input type="radio" name="current3pl" />{option}</label>
+              ))}
+            </div>
+          </fieldset>
+
+          <label className="field" style={{ marginTop: "1rem" }}><span>Comments or specific needs</span><textarea name="comments" maxLength={500} /></label>
+          <label className="field" style={{ marginTop: "1rem" }}><span><input name="privacyPolicy" type="checkbox" required style={{ minHeight: "auto", width: "auto" }} /> I accept the privacy policy</span></label>
+          <button type="submit" style={{ marginTop: "1rem" }}>Submit request</button>
+        </form>
+      </section>
+
+      <footer className="panel" style={{ marginTop: "1rem" }}>
+        <p><strong>TrackFlow</strong> · © 2025 TrackFlow. All rights reserved. · <a href="https://linkedin.com/company/trackflow">LinkedIn</a></p>
+      </footer>
+    </>
+  );
+}

@@ -1,127 +1,148 @@
-import { Assignment, Employee, JobOrder, Service } from "./types/models";
+import { Facility, LeadRequest, LogisticsService, TeamMember } from "./types/models";
 import { filterBy, groupBy, sortBy } from "./utils/collections";
 import { binarySearch, linearSearch } from "./utils/search";
 import {
-  validateAssignment,
-  validateEmployee,
-  validateJobOrder,
-  validateService,
+  validateFacility,
+  validateLeadRequest,
+  validateLogisticsService,
+  validateTeamMember,
 } from "./utils/validations";
 import {
-  averageJobPrice,
-  countJobsByPropertyType,
-  countJobsByServiceType,
-  employeesWithMostHoursWorked,
-  totalLaborCostPerJob,
-  totalRevenue,
+  countLeadsByMonthlyVolume,
+  countLeadsByOperatingCountry,
+  countLeadsByProductType,
+  countLeadsByServiceInterest,
+  countLeadsByThreePLStatus,
+  lowVolumeWarningLeads,
 } from "./utils/transformations";
 
-const services: Service[] = [
-  { id: "svc-1", name: "pointing", basePrice: 1500 },
-  { id: "svc-2", name: "caulking", basePrice: 900 },
-  { id: "svc-3", name: "waterproofing", basePrice: 2000 },
-  { id: "svc-4", name: "cleaning", basePrice: 500 },
-  { id: "svc-5", name: "masonry-repair", basePrice: 1200 },
+const services: LogisticsService[] = [
+  { id: "svc-1", name: "warehouse-management", baseMonthlyFee: 2500 },
+  { id: "svc-2", name: "last-mile-delivery", baseMonthlyFee: 1800 },
+  { id: "svc-3", name: "reverse-logistics", baseMonthlyFee: 1500 },
 ];
 
-const jobs: JobOrder[] = [
+const leads: LeadRequest[] = [
   {
-    id: "job-1",
-    clientName: "Apex Realty",
-    propertyType: "commercial",
-    serviceId: "svc-3",
-    price: 3200,
-    address: "101 Main St",
-    date: "2026-05-01",
-    status: "scheduled",
+    id: "lead-1",
+    companyName: "Nova Fashion Co",
+    contactPerson: "Elena Morris",
+    corporateEmail: "elena@novafashion.com",
+    phone: "+1 213 555 0198",
+    companyWebsite: "https://novafashion.com",
+    operatingCountry: "United States",
+    productType: "Fashion",
+    monthlyVolume: "501-2000",
+    servicesOfInterest: ["warehouse-management", "last-mile-delivery"],
+    current3pl: "Evaluating options",
+    comments: "Launching a West Coast fulfillment operation next quarter.",
+    privacyAccepted: true,
+    status: "qualified",
   },
   {
-    id: "job-2",
-    clientName: "Sarah Johnson",
-    propertyType: "residential",
-    serviceId: "svc-1",
-    price: 1700,
-    address: "22 Pine Ave",
-    date: "2026-05-04",
-    status: "pending",
+    id: "lead-2",
+    companyName: "CircuitBox",
+    contactPerson: "Miguel Santos",
+    corporateEmail: "miguel@circuitbox.es",
+    phone: "+34 976 123 777",
+    companyWebsite: "https://circuitbox.es",
+    operatingCountry: "Spain",
+    productType: "Electronics",
+    monthlyVolume: "101-500",
+    servicesOfInterest: ["reverse-logistics"],
+    current3pl: "Yes",
+    privacyAccepted: true,
+    status: "contacted",
   },
   {
-    id: "job-3",
-    clientName: "Maple Condos",
-    propertyType: "commercial",
-    serviceId: "svc-2",
-    price: 1250,
-    address: "88 Elm Rd",
-    date: "2026-05-07",
-    status: "completed",
+    id: "lead-3",
+    companyName: "GlowCart",
+    contactPerson: "Aisha Patel",
+    corporateEmail: "aisha@glowcart.com",
+    phone: "+1 310 555 0142",
+    operatingCountry: "Both",
+    productType: "Cosmetics",
+    monthlyVolume: "2000+",
+    servicesOfInterest: ["warehouse-management", "last-mile-delivery", "reverse-logistics"],
+    current3pl: "No",
+    privacyAccepted: true,
+    status: "new",
   },
   {
-    id: "job-4",
-    clientName: "Luis Gomez",
-    propertyType: "residential",
-    serviceId: "svc-5",
-    price: 1450,
-    address: "9 Cedar Ln",
-    date: "2026-05-09",
-    status: "scheduled",
+    id: "lead-4",
+    companyName: "Small Batch Goods",
+    contactPerson: "Laura Chen",
+    corporateEmail: "laura@smallbatchgoods.com",
+    phone: "+1 323 555 0110",
+    operatingCountry: "Other",
+    productType: "Other",
+    monthlyVolume: "0-100",
+    servicesOfInterest: ["last-mile-delivery"],
+    current3pl: "No",
+    comments: "Testing whether outsourced logistics makes sense yet.",
+    privacyAccepted: true,
+    status: "not-fit",
   },
 ];
 
-const employees: Employee[] = [
-  { id: "emp-1", name: "Maria", role: "foreman", hourlyRate: 55 },
-  { id: "emp-2", name: "Devon", role: "mason", hourlyRate: 45 },
-  { id: "emp-3", name: "Jules", role: "laborer", hourlyRate: 30 },
+const facilities: Facility[] = [
+  {
+    id: "fac-1",
+    city: "Los Angeles",
+    country: "United States",
+    services: ["warehouse-management", "last-mile-delivery", "reverse-logistics"],
+    carriers: ["UPS", "FedEx", "DHL"],
+  },
+  {
+    id: "fac-2",
+    city: "Zaragoza",
+    country: "Spain",
+    services: ["warehouse-management", "last-mile-delivery", "reverse-logistics"],
+    carriers: ["MRW", "SEUR", "DHL"],
+  },
 ];
 
-const assignments: Assignment[] = [
-  { id: "asg-1", jobId: "job-1", employeeId: "emp-1", hoursWorked: 6 },
-  { id: "asg-2", jobId: "job-1", employeeId: "emp-2", hoursWorked: 8 },
-  { id: "asg-3", jobId: "job-2", employeeId: "emp-2", hoursWorked: 7 },
-  { id: "asg-4", jobId: "job-3", employeeId: "emp-3", hoursWorked: 9 },
-  { id: "asg-5", jobId: "job-4", employeeId: "emp-1", hoursWorked: 5 },
-  { id: "asg-6", jobId: "job-4", employeeId: "emp-3", hoursWorked: 5 },
+const teamMembers: TeamMember[] = [
+  { id: "tm-1", name: "Miguel Torres", role: "account-manager", country: "Spain" },
+  { id: "tm-2", name: "Nora Kim", role: "warehouse-operator", country: "United States" },
+  { id: "tm-3", name: "Diego Ruiz", role: "route-coordinator", country: "Spain" },
+  { id: "tm-4", name: "Maya Johnson", role: "support-specialist", country: "United States" },
 ];
 
 function runSearchExamples(): void {
-  const pendingJob = linearSearch(jobs, (job) => job.status === "pending");
-  console.log("linearSearch pending job:", pendingJob);
+  const newLead = linearSearch(leads, (lead) => lead.status === "new");
+  console.log("linearSearch new lead:", newLead);
 
-  const jobsSortedById = sortBy(jobs, (job) => job.id);
-  const targetJob = binarySearch(jobsSortedById, "job-3", (job) => job.id);
-  console.log("binarySearch by id job-3:", targetJob);
+  const leadsSortedById = sortBy(leads, (lead) => lead.id);
+  const targetLead = binarySearch(leadsSortedById, "lead-3", (lead) => lead.id);
+  console.log("binarySearch by id lead-3:", targetLead);
 }
 
 function runCollectionExamples(): void {
-  const commercialJobs = filterBy(jobs, (job) => job.propertyType === "commercial");
-  console.log("filterBy commercial jobs:", commercialJobs);
+  const binationalLeads = filterBy(leads, (lead) => lead.operatingCountry === "Both");
+  console.log("filterBy binational leads:", binationalLeads);
 
-  const jobsByHighestPrice = sortBy(jobs, (job) => job.price, "desc");
-  console.log("sortBy price desc:", jobsByHighestPrice);
+  const leadsByHighestVolume = sortBy(leads, (lead) => lead.monthlyVolume, "desc");
+  console.log("sortBy monthly volume desc:", leadsByHighestVolume);
 
-  const jobsGroupedByStatus = groupBy(jobs, (job) => job.status);
-  console.log("groupBy status:", jobsGroupedByStatus);
+  const leadsGroupedByStatus = groupBy(leads, (lead) => lead.status);
+  console.log("groupBy status:", leadsGroupedByStatus);
 }
 
 function runValidationExamples(): void {
-  console.log("validateService:", services.map(validateService));
-  console.log("validateJobOrder:", jobs.map((job) => validateJobOrder(job, services)));
-  console.log("validateEmployee:", employees.map(validateEmployee));
-  console.log(
-    "validateAssignment:",
-    assignments.map((assignment) => validateAssignment(assignment, jobs, employees))
-  );
+  console.log("validateLogisticsService:", services.map(validateLogisticsService));
+  console.log("validateLeadRequest:", leads.map((lead) => validateLeadRequest(lead, services)));
+  console.log("validateFacility:", facilities.map(validateFacility));
+  console.log("validateTeamMember:", teamMembers.map(validateTeamMember));
 }
 
 function runTransformationExamples(): void {
-  console.log("countJobsByServiceType:", countJobsByServiceType(jobs, services));
-  console.log("countJobsByPropertyType:", countJobsByPropertyType(jobs));
-  console.log("totalRevenue:", totalRevenue(jobs));
-  console.log("averageJobPrice:", averageJobPrice(jobs));
-  console.log("totalLaborCostPerJob:", totalLaborCostPerJob(assignments, employees));
-  console.log(
-    "employeesWithMostHoursWorked:",
-    employeesWithMostHoursWorked(assignments, employees)
-  );
+  console.log("countLeadsByServiceInterest:", countLeadsByServiceInterest(leads, services));
+  console.log("countLeadsByOperatingCountry:", countLeadsByOperatingCountry(leads));
+  console.log("countLeadsByProductType:", countLeadsByProductType(leads));
+  console.log("countLeadsByMonthlyVolume:", countLeadsByMonthlyVolume(leads));
+  console.log("countLeadsByThreePLStatus:", countLeadsByThreePLStatus(leads));
+  console.log("lowVolumeWarningLeads:", lowVolumeWarningLeads(leads));
 }
 
 function runDemo(): void {

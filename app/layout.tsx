@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "./Navigation";
+import { AuthProvider } from "./auth/AuthProvider";
 
 export const metadata: Metadata = {
   title: "TrackFlow Lead Candidates",
@@ -11,8 +12,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Navigation />
-        <main className="shell">{children}</main>
+        <AuthProvider>
+          <Navigation />
+          <main className="shell">{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );

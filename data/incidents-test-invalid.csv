@@ -1,0 +1,11 @@
+incident_id,category,status,description,customer_name,email,phone,date,satisfaction_score,notes
+INC-100,invalid_category,closed,Test with invalid category,Test User,test@example.com,+1 213 555 0000,2026-09-01,5,Should fail
+INC-101,complaints,bad_status,Test with invalid status,Test User2,test2@example.com,,2026-09-01,,
+INC-102,,closed,Missing category field,Test User3,test3@example.com,,2026-09-01,,
+INC-103,requests,closed,,Missing description,test4@example.com,,2026-09-01,,
+INC-104,complaints,open,Missing customer_name and email,test5@example.com,,2026-09-01,,
+INC-105,complaints,closed,Invalid email format,Invalid User,bad-email,,2026-09-01,8,
+INC-106,requests,open,Invalid phone format,Phone User,bad-phone@example.com,abc123,2026-09-01,,
+INC-107,operational_failures,closed,Invalid date format,Date User,date@example.com,,2026-09-32,,
+INC-108,complaints,closed,Satisfaction score out of range,Score User,score@example.com,,2026-09-01,15,
+INC-109,complaints,closed,Multiple validation errors,Bad User,bad,,abc,99,

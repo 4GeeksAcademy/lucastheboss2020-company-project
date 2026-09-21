@@ -1,13 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createCandidate, listCandidates } from "./data";
 import type { CandidateWriteInput } from "../../../src/candidates/types";
+import { hasValidBearerToken, unauthorized } from "../_auth";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  if (!hasValidBearerToken(request)) {
+    return unauthorized();
+  }
   const url = new URL(request.url);
   return NextResponse.json(listCandidates(url.searchParams));
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  // Lead capture is public — no auth required
   try {
     const body = (await request.json()) as CandidateWriteInput;
     const result = createCandidate(body);

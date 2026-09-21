@@ -1,0 +1,26 @@
+incident_id,category,status,description,customer_name,email,phone,date,satisfaction_score,notes
+INC-001,complaints,closed,Missing item in order #12345,Maria Lopez,maria@example.com,+1 213 555 0199,2026-08-01,7,Replacement sent
+INC-002,complaints,open,Wrong item received in order #67890,James Chen,james@example.com,+1 310 555 0143,2026-08-03,,Awaiting return
+INC-003,requests,closed,Request for return label order #54321,Sofia Ruiz,sofia@example.com,+34 976 123 456,2026-08-05,8,Label sent
+INC-004,operational_failures,closed,Delivery delayed by 2 days in Los Angeles,Carlos Mendez,carlos@example.com,+1 323 555 0111,2026-08-07,5,Apology and discount offered
+INC-005,complaints,open,Damaged package received in Zaragoza,Ana Martinez,ana@example.com,+34 976 555 222,2026-08-10,,Insurance claim filed
+INC-006,requests,closed,Request for pickup of multiple returns,Elena Torres,elena@example.com,+1 213 555 0181,2026-08-12,9,Pickup scheduled
+INC-007,operational_failures,discarded,Incorrect tracking number sent in email,Luis Gomez,luis@example.com,+34 976 123 789,2026-08-15,,Corrected and sent
+INC-008,complaints,open,Billing discrepancy in invoice #98765,Priya Singh,priya@example.com,+1 310 555 0192,2026-08-18,,Under review
+INC-009,requests,closed,Wholesale pricing request for new partnership,Marco Bianchi,marco@example.com,+39 02 1234 567,2026-08-20,6,Pricing sent
+INC-010,operational_failures,closed,System outage affected order processing on Aug 22,Tom Williams,tom@example.com,+1 213 555 0170,2026-08-22,4,Root cause analysis completed
+INC-011,complaints,open,Repeated missed delivery windows at Los Angeles hub,Cindy Wu,cindy@example.com,+1 310 555 0187,2026-08-25,,Escalated to operations
+INC-012,requests,closed,Request for additional warehouse storage capacity,David Park,david@example.com,+1 213 555 0163,2026-08-28,7,Capacity allocated
+INC-013,operational_failures,closed,Inventory count discrepancy for SKU-456 in Zaragoza,Nuria Garcia,nuria@example.com,+34 976 555 333,2026-09-01,6,Recount completed
+INC-014,complaints,open,Poor packaging quality on cosmetics items in last shipment,Rosa Martinez,rosa@example.com,+34 976 123 444,2026-09-03,,Supplier notified
+INC-015,requests,closed,Integration request for Shopify store,Alex Johnson,alex@example.com,+1 323 555 0195,2026-09-05,8,Integration in progress
+INC-016,complaints,closed,Customer service response time too slow,Isabel Fernandez,isabel@example.com,+34 976 555 111,2026-09-01,6,Additional agents hired
+INC-017,requests,closed,Request for expedited shipping option to Canary Islands,Juan Perez,juan@example.com,+34 928 123 456,2026-09-02,9,Expedited option added
+INC-018,operational_failures,open,Security breach attempt on customer data portal,Mike Chen,mike@example.com,+1 213 555 0155,2026-09-04,,Security audit initiated
+INC-019,complaints,closed,Product returned in unsellable condition,Katie Brown,katie@example.com,+1 310 555 0123,2026-08-29,5,Credit issued
+INC-020,requests,closed,New carrier integration request (FedEx Ground),Operations Team,ops@example.com,,2026-09-06,7,Integration testing underway
+INC-021,operational_failures,open,Staff shortage during peak hours in Zaragoza warehouse,Pablo Ruiz,pablo@example.com,+34 976 555 444,2026-09-07,,Temp staffing arranged
+INC-022,complaints,open,International shipping customs delay to Mexico,Laura Kim,laura@example.com,+1 213 555 0197,2026-09-08,,Customs broker contacted
+INC-023,requests,closed,New warehouse location inquiry for Miami expansion,Chris Martin,chris@example.com,+1 305 555 0190,2026-09-09,8,Miami feasibility study
+INC-024,operational_failures,closed,IT outage affected label printing system on Sep 10,IT Support,it@example.com,+34 976 123 555,2026-09-10,7,System restored
+INC-025,complaints,closed,Pick and pack error on order #24680,Helen Davis,helen@example.com,+1 323 555 0188,2026-09-11,7,Correct order shipped

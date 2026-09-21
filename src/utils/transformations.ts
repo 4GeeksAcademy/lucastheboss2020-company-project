@@ -1,116 +1,148 @@
-import { Assignment, Employee, JobOrder, Service } from "../types/models";
+import {
+  LeadRequest,
+  LogisticsService,
+  MonthlyShippingVolume,
+  OperatingCountry,
+  ProductType,
+  ThreePLStatus,
+} from "../types/models";
 import { groupBy } from "./collections";
+import { shouldWarnForLowVolume } from "./validations";
 
-export type JobsByServiceReport = Record<Service["name"], number>;
+/**
+ * Report type showing count of leads interested in each service.
+ * Each service maps to a number representing how many leads selected it.
+ */
+export type LeadsByServiceReport = Record<LogisticsService["name"], number>;
 
-export function countJobsByServiceType(
-  jobs: JobOrder[],
-  services: Service[]
-): JobsByServiceReport {
-  const defaults: JobsByServiceReport = {
-    pointing: 0,
-    caulking: 0,
-    waterproofing: 0,
-    cleaning: 0,
-    "masonry-repair": 0,
-  };
+/**
+ * Counts leads by their service interests.
+ * Each lead can be interested in multiple services, so a lead may be counted multiple times.
+ * 
+ * @param leads - Array of lead requests to analyze
+ * @param services - Available services (used to initialize counts to 0 for each service)
+ * @returns Report with service names as keys and lead counts as values
+ * 
+ * @example
+ * const report = countLeadsByServiceInterest(leads, services);
+ * // Returns: { "warehouse-management": 3, "last-mile-delivery": 4, "reverse-logistics": 2 }
+ */
+export function countLeadsByServiceInterest(
+  leads: LeadRequest[],
+  services: LogisticsService[]
+): LeadsByServiceReport {
+  const defaults = services.reduce((report, service) => {
+    report[service.name] = 0;
+    return report;
+  }, {} as LeadsByServiceReport);
 
-  const serviceById = new Map(services.map((service) => [service.id, service.name]));
-
-  for (const job of jobs) {
-    const serviceName = serviceById.get(job.serviceId);
-    if (serviceName) {
-      defaults[serviceName] += 1;
+  for (const lead of leads) {
+    for (const serviceName of lead.servicesOfInterest) {
+      if (serviceName in defaults) {
+        defaults[serviceName] += 1;
+      }
     }
   }
 
   return defaults;
 }
 
-export type JobsByPropertyTypeReport = Record<"residential" | "commercial", number>;
+/**
+ * Report type showing count of leads by operating country.
+ */
+export type LeadsByOperatingCountryReport = Record<OperatingCountry, number>;
 
-export function countJobsByPropertyType(jobs: JobOrder[]): JobsByPropertyTypeReport {
-  const grouped = groupBy(jobs, (job) => job.propertyType);
+/**
+ * Counts leads by their operating country (United States, Spain, Both, Other).
+ * 
+ * @param leads - Array of lead requests to analyze
+ * @returns Report with countries as keys and lead counts as values
+ */
+export function countLeadsByOperatingCountry(leads: LeadRequest[]): LeadsByOperatingCountryReport {
+  const grouped = groupBy(leads, (lead) => lead.operatingCountry);
 
   return {
-    residential: grouped.residential?.length ?? 0,
-    commercial: grouped.commercial?.length ?? 0,
+    "United States": grouped["United States"]?.length ?? 0,
+    Spain: grouped.Spain?.length ?? 0,
+    Both: grouped.Both?.length ?? 0,
+    Other: grouped.Other?.length ?? 0,
   };
 }
 
-export function totalRevenue(jobs: JobOrder[]): number {
-  return jobs.reduce((sum, job) => sum + job.price, 0);
+/**
+ * Report type showing count of leads by product type.
+ */
+export type LeadsByProductTypeReport = Record<ProductType, number>;
+
+/**
+ * Counts leads by their product type (Fashion, Electronics, Cosmetics, Food, Other).
+ * 
+ * @param leads - Array of lead requests to analyze
+ * @returns Report with product types as keys and lead counts as values
+ */
+export function countLeadsByProductType(leads: LeadRequest[]): LeadsByProductTypeReport {
+  const grouped = groupBy(leads, (lead) => lead.productType);
+
+  return {
+    Fashion: grouped.Fashion?.length ?? 0,
+    Electronics: grouped.Electronics?.length ?? 0,
+    Cosmetics: grouped.Cosmetics?.length ?? 0,
+    Food: grouped.Food?.length ?? 0,
+    Other: grouped.Other?.length ?? 0,
+  };
 }
 
-export function averageJobPrice(jobs: JobOrder[]): number {
-  if (jobs.length === 0) {
-    return 0;
-  }
+/**
+ * Report type showing count of leads by monthly volume bracket.
+ */
+export type LeadsByMonthlyVolumeReport = Record<MonthlyShippingVolume, number>;
 
-  return totalRevenue(jobs) / jobs.length;
+/**
+ * Counts leads by their estimated monthly shipping volume bracket.
+ * 
+ * @param leads - Array of lead requests to analyze
+ * @returns Report with volume brackets as keys and lead counts as values
+ */
+export function countLeadsByMonthlyVolume(leads: LeadRequest[]): LeadsByMonthlyVolumeReport {
+  const grouped = groupBy(leads, (lead) => lead.monthlyVolume);
+
+  return {
+    "0-100": grouped["0-100"]?.length ?? 0,
+    "101-500": grouped["101-500"]?.length ?? 0,
+    "501-2000": grouped["501-2000"]?.length ?? 0,
+    "2000+": grouped["2000+"]?.length ?? 0,
+    "Not sure": grouped["Not sure"]?.length ?? 0,
+  };
 }
 
-export interface LaborCostPerJob {
-  jobId: string;
-  laborCost: number;
+/**
+ * Report type showing count of leads by their 3PL provider status.
+ */
+export type LeadsByThreePLStatusReport = Record<ThreePLStatus, number>;
+
+/**
+ * Counts leads by whether they currently work with another 3PL provider.
+ * 
+ * @param leads - Array of lead requests to analyze
+ * @returns Report with 3PL statuses as keys and lead counts as values
+ */
+export function countLeadsByThreePLStatus(leads: LeadRequest[]): LeadsByThreePLStatusReport {
+  const grouped = groupBy(leads, (lead) => lead.current3pl);
+
+  return {
+    Yes: grouped.Yes?.length ?? 0,
+    No: grouped.No?.length ?? 0,
+    "Evaluating options": grouped["Evaluating options"]?.length ?? 0,
+  };
 }
 
-export function totalLaborCostPerJob(
-  assignments: Assignment[],
-  employees: Employee[]
-): LaborCostPerJob[] {
-  const employeeRateById = new Map(
-    employees.map((employee) => [employee.id, employee.hourlyRate])
-  );
-
-  const costsByJob = new Map<string, number>();
-
-  for (const assignment of assignments) {
-    const hourlyRate = employeeRateById.get(assignment.employeeId);
-    if (hourlyRate === undefined) {
-      continue;
-    }
-
-    const current = costsByJob.get(assignment.jobId) ?? 0;
-    const laborCost = assignment.hoursWorked * hourlyRate;
-    costsByJob.set(assignment.jobId, current + laborCost);
-  }
-
-  return Array.from(costsByJob.entries()).map(([jobId, laborCost]) => ({
-    jobId,
-    laborCost,
-  }));
-}
-
-export interface EmployeeHours {
-  employeeId: string;
-  employeeName: string;
-  totalHoursWorked: number;
-}
-
-export function employeesWithMostHoursWorked(
-  assignments: Assignment[],
-  employees: Employee[]
-): EmployeeHours[] {
-  const hoursByEmployee = new Map<string, number>();
-
-  for (const assignment of assignments) {
-    const current = hoursByEmployee.get(assignment.employeeId) ?? 0;
-    hoursByEmployee.set(assignment.employeeId, current + assignment.hoursWorked);
-  }
-
-  if (hoursByEmployee.size === 0) {
-    return [];
-  }
-
-  const maxHours = Math.max(...Array.from(hoursByEmployee.values()));
-  const employeeById = new Map(employees.map((employee) => [employee.id, employee]));
-
-  return Array.from(hoursByEmployee.entries())
-    .filter(([, totalHoursWorked]) => totalHoursWorked === maxHours)
-    .map(([employeeId, totalHoursWorked]) => ({
-      employeeId,
-      employeeName: employeeById.get(employeeId)?.name ?? "Unknown",
-      totalHoursWorked,
-    }));
+/**
+ * Filters leads that should trigger the low-volume warning.
+ * These are leads with monthly volume of 0-100 with a specific product type.
+ * 
+ * @param leads - Array of lead requests to analyze
+ * @returns Array of leads that trigger the low-volume warning
+ */
+export function lowVolumeWarningLeads(leads: LeadRequest[]): LeadRequest[] {
+  return leads.filter(shouldWarnForLowVolume);
 }

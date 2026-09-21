@@ -1,145 +1,285 @@
-# Context, Inc.
+# CONTEXT.md - TrackFlow
 
-## Company Overview
+## Milestone 1: Your Company's Public Website
 
-PAB Restoration is a specialized construction company dedicated to protecting and preserving building exteriors through expert masonry and waterproofing services. Founded and owned by a seasoned exterior waterproofing mason, the company brings hands‑on craftsmanship, technical precision, and decades of field experience to every project.
+This project is a public corporate website and lead-capture experience for TrackFlow. Everything in the website, form, validation logic, and supporting TypeScript model must reflect the TrackFlow logistics domain.
 
-PAB Restoration focuses on three core services. pointing, caulking, and waterproofing, ensuring that residential, commercial, and multi‑unit properties remain structurally sound, weather‑resistant, and visually appealing. With a deep understanding of how water, time, and climate impact masonry structures, the company approaches each job with a commitment to long‑term durability and meticulous detail. 
+## Your company
 
-## Product & Service
+TrackFlow is a last-mile delivery and warehouse management company founded in 2009 in Los Angeles, United States. It operates in two markets: United States (Los Angeles) and Spain (Zaragoza). TrackFlow offers three services: warehouse management for e-commerce brands, last-mile delivery, and reverse logistics.
 
-Brick and Stone Pointing
-- Removal of deteriorated mortar
-- Installation of new, properly matched mortar
-- Structural reinforcement of masonry walls
-- Improved appearance and extended building lifespan
+TrackFlow has approximately 130 employees and generates around 9 million euros in annual revenue. Its clients are mid-sized fashion, electronics, and cosmetics e-commerce brands that sell online.
 
-Pointing restores the integrity of brick and stone surfaces, preventing water penetration and preserving the building’s original character.
+## Your department and the problem you must solve
 
-Professional Caulking Services
-- Joint sealing around windows, doors, and façade transitions
-- Expansion joint caulking
-- High‑performance sealants for long‑term flexibility and adhesion
+You work in the TrackFlow Tech unit, reporting directly to CTO Andres Kim. TrackFlow's current corporate website was built years ago by an external agency and is outdated. It does not reflect that the company operates in two countries, does not clearly explain the services, and gives interested companies no structured way to request information.
 
-Proper caulking prevents air leaks, water infiltration, and energy loss while maintaining a clean, finished exterior.
+Miguel Torres, Commercial Director, needs a professional website that presents TrackFlow's services and captures leads from potential companies that want to outsource their logistics.
 
-Exterior Waterproofing
-- Above‑grade waterproof coatings
-- Sealants and protective barriers
-- Crack repair and water intrusion prevention
-- Moisture‑control solutions for masonry, concrete, and façade systems
+## Stakeholder
 
-These services protect buildings from leaks, mold, and structural damage caused by moisture exposure.
+Miguel Torres, Commercial Director, needs a modern corporate website with:
 
-Façade Cleaning and Surface Prep
-- Power washing
-- Efflorescence removal
-- Surface preparation for coatings or repairs
+- Clear explanation of services
+- Coverage in both countries
+- Lead-capture form with structured fields
+- Responsive, accessible, SEO-optimized implementation
+- TailwindCSS styling
+- Complete validation
 
-Minor Masonry Repairs
-- Brick replacement
-- Patchwork
-- Small‑scale restoration to maintain structural integrity
+## Language scope
 
-Commercial & Residential Service
-- Multi‑unit buildings
-- Commercial properties
-- Townhomes and single‑family residences
+English is the base language for the website and form experience. Spanish support is optional as an enhancement because TrackFlow operates in the United States and Spain.
 
-## Data Model
+## Landing page content
 
-1. Service
-Represents one of the services the company offers.
+The landing page must include these sections, in this order:
+
+1. Header
+2. Hero
+3. Services
+4. Coverage
+5. Why TrackFlow
+6. Contact
+7. Footer
+
+### Header
+
+- Logo or name: TrackFlow
+- Navigation: Home | Services | Coverage | Contact
+
+### Hero
+
+- Headline: "Logistics that scales with your e-commerce"
+- Subheadline: "Warehouse management, last-mile deliveries, and reverse logistics in the United States and Spain. Over 15 years helping fashion, electronics, and cosmetics brands grow without worrying about operations."
+- Call to action: Button "Request information" linking to the form
+
+### Services
+
+#### Warehouse Management
+
+- Storage, picking and packing
+- Real-time inventory
+- We operate warehouses in Los Angeles and Zaragoza
+
+#### Last-Mile Deliveries
+
+- Certified carrier network in both countries
+- Unified shipment tracking
+- Incident and returns management
+
+#### Reverse Logistics
+
+- Complete returns management
+- Inspection and reconditioning
+- Integration with your sales platform
+
+### Coverage
+
+#### United States
+
+- Warehouse in Los Angeles
+- National coverage
+- Carriers: UPS, FedEx, DHL
+
+#### Spain
+
+- Warehouse in Zaragoza
+- Peninsular and island coverage
+- Carriers: MRW, SEUR, DHL
+
+### Why TrackFlow
+
+- Binational operation: The only operator with own infrastructure in the United States and Spain
+- +130 professionals dedicated to your logistics
+- Own technology for total visibility of your inventory
+- E-commerce specialization in fashion, electronics, and cosmetics
+
+### Contact
+
+- Email: comercial@trackflow.com
+- Los Angeles: +1 213 555 0147
+- Zaragoza: +34 976 123 456
+
+### Footer
+
+- © 2025 TrackFlow. All rights reserved.
+- LinkedIn
+
+## Information request form fields
+
+The form must capture the following information:
+
+| Field | Type | Validation | Required |
+| --- | --- | --- | --- |
+| Company name | text | Minimum 2 characters | Yes |
+| Contact person | text | Minimum 2 words (first and last name) | Yes |
+| Corporate email | email | Valid email format | Yes |
+| Phone | tel | Format: +[country code] [number] | Yes |
+| Company website | url | Valid URL format | No |
+| Main operating country | select | United States / Spain / Both / Other | Yes |
+| Product type | select | Fashion / Electronics / Cosmetics / Food / Other | Yes |
+| Estimated monthly shipping volume | select | 0-100 / 101-500 / 501-2000 / 2000+ / Not sure | Yes |
+| Services of interest | checkbox | Warehousing / Last mile / Reverse logistics (multiple) | Yes |
+| Do you currently work with another 3PL? | radio | Yes / No / Evaluating options | Yes |
+| Comments or specific needs | textarea | Maximum 500 characters | No |
+| I accept the privacy policy | checkbox | Must be checked to submit | Yes |
+
+## Specific validations
+
+1. Company name: Minimum 2 characters
+2. Contact person: Must contain at least first and last name
+3. Email: Must be valid format, containing @ and domain
+4. Phone: Must start with + followed by country code
+5. Website: If provided, must be valid URL, starting with http:// or https://
+6. Services of interest: At least one must be selected
+7. Comments: Limit to 500 characters with visible counter
+8. Privacy policy: Checkbox must be checked to submit
+
+## Expected error messages
+
+When a field does not meet validation, display these specific messages:
+
+- Company name: "Company name must have at least 2 characters"
+- Contact person: "Enter first and last name of contact"
+- Email: "Enter a valid corporate email (example: name@company.com)"
+- Phone: "Phone must include country code (example: +1 213 555 0147)"
+- Website: "If you include website, it must be a valid URL"
+- Country: "Select main operating country"
+- Product type: "Select the type of product you handle"
+- Monthly volume: "Select estimated monthly volume"
+- Services of interest: "Select at least one service of interest"
+- Current 3PL: "Indicate if you currently work with another logistics provider"
+- Comments: "Comments cannot exceed 500 characters (X remaining)"
+- Privacy policy: "You must accept the privacy policy to continue"
+
+## Success message
+
+When the form validates correctly and simulated submission completes, display:
+
+Thank you for your interest in TrackFlow!
+
+We have received your request. Our commercial team will review your information and contact you within the next 24-48 hours to schedule a call and learn about your logistics needs in detail.
+
+If you have any urgent inquiry, write to us directly at comercial@trackflow.com
+
+## Specific restriction
+
+The form is designed for e-commerce companies looking to outsource their logistics, not for end consumers who want to track a package or make a return.
+
+If the selected monthly volume is "0-100 shipments/month" and the Product type field is relevant, include this warning message:
+
+"For volumes under 100 monthly shipments, our services might not be the most efficient solution. Are you sure you want to continue?"
+
+## Required Schema.org markup
+
+Implement this Schema.org markup on the landing page:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "TrackFlow",
+  "description": "Warehouse management and last-mile deliveries for e-commerce",
+  "url": "https://trackflow.com",
+  "foundingDate": "2009",
+  "address": [
+    {
+      "@type": "PostalAddress",
+      "addressCountry": "US",
+      "addressLocality": "Los Angeles",
+      "addressRegion": "California"
+    },
+    {
+      "@type": "PostalAddress",
+      "addressCountry": "ES",
+      "addressLocality": "Zaragoza",
+      "addressRegion": "Aragón"
+    }
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-213-555-0147",
+    "contactType": "sales",
+    "availableLanguage": ["Spanish", "English"]
+  },
+  "sameAs": ["https://linkedin.com/company/trackflow"],
+  "areaServed": [
+    {
+      "@type": "Country",
+      "name": "United States"
+    },
+    {
+      "@type": "Country",
+      "name": "Spain"
+    }
+  ]
+}
+```
+
+## Data model
+
+The supporting TypeScript model represents TrackFlow logistics operations and lead qualification.
+
+### LogisticsService
+
+Represents one of TrackFlow's services.
 
 Fields:
 
-id: string
+- id: string
+- name: "warehouse-management" | "last-mile-delivery" | "reverse-logistics"
+- baseMonthlyFee: number
 
-name: "pointing" | "caulking" | "waterproofing" | "cleaning" | "masonry-repair"
+### LeadRequest
 
-basePrice: number
-
-2. JobOrder
-Represents a job requested by a client.
-
-Fields:
-
-id: string
-
-clientName: string
-
-propertyType: "residential" | "commercial"
-
-serviceId: string (references Service)
-
-price: number
-
-address: string
-
-date: string
-
-status: "pending" | "scheduled" | "completed"
-
-3. Employee
-Represents a worker.
+Represents a company requesting information.
 
 Fields:
 
-id: string
+- id: string
+- companyName: string
+- contactPerson: string
+- corporateEmail: string
+- phone: string
+- companyWebsite?: string
+- operatingCountry: "United States" | "Spain" | "Both" | "Other"
+- productType: "Fashion" | "Electronics" | "Cosmetics" | "Food" | "Other"
+- monthlyVolume: "0-100" | "101-500" | "501-2000" | "2000+" | "Not sure"
+- servicesOfInterest: LogisticsServiceName[]
+- current3pl: "Yes" | "No" | "Evaluating options"
+- comments?: string
+- privacyAccepted: boolean
+- status: "new" | "qualified" | "contacted" | "not-fit"
 
-name: string
+### Facility
 
-role: "mason" | "laborer" | "foreman"
-
-hourlyRate: number
-
-4. Assignment
-Represents which employees are assigned to which job.
+Represents an owned TrackFlow warehouse.
 
 Fields:
 
-id: string
+- id: string
+- city: "Los Angeles" | "Zaragoza"
+- country: "United States" | "Spain"
+- services: LogisticsServiceName[]
+- carriers: string[]
 
-jobId: string
+### TeamMember
 
-employeeId: string
+Represents a TrackFlow employee.
 
-hoursWorked: number
+Fields:
 
-## Validation Rules
+- id: string
+- name: string
+- role: "warehouse-operator" | "route-coordinator" | "account-manager" | "support-specialist"
+- country: "United States" | "Spain"
 
-1. Service
+## Reports to generate
 
-basePrice must be > 0
-
-2. JobOrder
-
-clientName cannot be empty
-
-price must be >= the service’s basePrice
-
-status must be one of the allowed values
-
-propertyType must be "residential" or "commercial"
-
-3. Employee
-
-hourlyRate must be > 0
-
-4. Assignment
-
-hoursWorked must be >= 0
-
-## Reports to Generate
-
-1. Count jobs by service type
-
-2. Count jobs by property type (residential vs commercial)
-
-3. Total revenue from all jobs
-
-4. Average job price
-
-5. Total labor cost per job
-
-6. Employees with the most hours worked
+1. Count leads by service of interest
+2. Count leads by operating country
+3. Count leads by product type
+4. Count leads by monthly volume
+5. Identify low-volume leads that should receive the warning
+6. Count leads by current 3PL status

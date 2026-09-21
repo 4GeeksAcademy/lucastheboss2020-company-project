@@ -1,156 +1,247 @@
-const applicationForm = document.getElementById("applicationForm");
-const APPLICATION_ENDPOINT = "https://formspree.io/f/your-form-id";
+const leadForm = document.getElementById("lead-form");
 
-function getDictionary() {
-  const lang = typeof window.getCurrentLanguage === "function" ? window.getCurrentLanguage() : "en";
+const ERROR_MESSAGES = {
+  companyName: "Company name must have at least 2 characters",
+  contactPerson: "Enter first and last name of contact",
+  corporateEmail: "Enter a valid corporate email (example: name@company.com)",
+  phone: "Phone must include country code (example: +1 213 555 0147)",
+  companyWebsite: "If you include website, it must be a valid URL",
+  operatingCountry: "Select main operating country",
+  productType: "Select the type of product you handle",
+  monthlyVolume: "Select estimated monthly volume",
+  servicesOfInterest: "Select at least one service of interest",
+  current3pl: "Indicate if you currently work with another logistics provider",
+  comments: "Comments cannot exceed 500 characters (X remaining)",
+  privacyPolicy: "You must accept the privacy policy to continue"
+};
 
-  if (lang === "es") {
-    return {
-      fullName: "Ingresa tu nombre completo.",
-      phone: "Ingresa un número de teléfono válido.",
-      email: "Ingresa un correo electrónico válido.",
-      address: "Ingresa tu dirección.",
-      position: "Ingresa el puesto al que aplicas.",
-      experience: "Ingresa años de experiencia entre 0 y 60.",
-      message: "Escribe al menos 20 caracteres en tu carta de presentación.",
-      resumeRequired: "Por favor sube tu currículum.",
-      resumeType: "El currículum debe ser un archivo PDF, DOC o DOCX.",
-      fixFields: "Corrige los campos marcados antes de enviar.",
-      sending: "Enviando tu solicitud...",
-      success: "Solicitud enviada con éxito. Te contactaremos pronto.",
-      failure: "No pudimos enviar tu solicitud en este momento. Envía tu currículum a contact@pabrestorationny.com."
-    };
-  }
+const SUCCESS_MESSAGE = `
+  <strong class="block text-base">Thank you for your interest in TrackFlow!</strong>
+  <span class="mt-4 block">We have received your request. Our commercial team will review your information and contact you within the next 24-48 hours to schedule a call and learn about your logistics needs in detail.</span>
+  <span class="mt-4 block">If you have any urgent inquiry, write to us directly at <a href="mailto:comercial@trackflow.com" class="text-trackBlue underline">comercial@trackflow.com</a></span>
+`;
 
-  return {
-    fullName: "Enter your full name.",
-    phone: "Enter a valid phone number.",
-    email: "Enter a valid email address.",
-    address: "Enter your address.",
-    position: "Enter the position you are applying for.",
-    experience: "Enter years of experience between 0 and 60.",
-    message: "Write at least 20 characters in your cover letter.",
-    resumeRequired: "Please upload your resume.",
-    resumeType: "Resume must be a PDF, DOC, or DOCX file.",
-    fixFields: "Please correct the highlighted fields before submitting.",
-    sending: "Sending your application...",
-    success: "Application submitted successfully. We will contact you soon.",
-    failure: "We could not submit your application right now. Please email your resume to contact@pabrestorationny.com."
-  };
+const LOW_VOLUME_WARNING = "For volumes under 100 monthly shipments, our services might not be the most efficient solution. Are you sure you want to continue?";
+
+function trimValue(input) {
+  return input ? input.value.trim() : "";
 }
 
-if (applicationForm) {
-  applicationForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const t = getDictionary();
+function getSelectedServices() {
+  return Array.from(document.querySelectorAll("input[name='servicesOfInterest']:checked"));
+}
 
-    const fullName = document.getElementById("fullName");
-    const phone = document.getElementById("phone");
-    const email = document.getElementById("email");
-    const address = document.getElementById("address");
-    const position = document.getElementById("position");
-    const experience = document.getElementById("experience");
-    const resume = document.getElementById("resume");
-    const message = document.getElementById("message");
-    const status = document.getElementById("formStatus");
-    const submitButton = applicationForm.querySelector("button[type='submit']");
+function getSelectedThreePL() {
+  return document.querySelector("input[name='current3pl']:checked");
+}
 
-    const fields = [
-      { input: fullName, key: "fullName", rule: (v) => v.trim().length >= 2, msg: t.fullName },
-      { input: phone, key: "phone", rule: (v) => /^\+?[0-9()\-\s]{10,20}$/.test(v.trim()), msg: t.phone },
-      { input: email, key: "email", rule: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), msg: t.email },
-      { input: address, key: "address", rule: (v) => v.trim().length >= 5, msg: t.address },
-      { input: position, key: "position", rule: (v) => v.trim().length >= 2, msg: t.position },
-      { input: experience, key: "experience", rule: (v) => v !== "" && Number(v) >= 0 && Number(v) <= 60, msg: t.experience },
-      { input: message, key: "message", rule: (v) => v.trim().length >= 20, msg: t.message }
-    ];
+function setFieldError(fieldId, message) {
+  const errorElement = document.getElementById(`${fieldId}Error`);
+  const input = document.getElementById(fieldId);
 
-    let isValid = true;
+  if (errorElement) {
+    errorElement.textContent = message;
+    if (message) {
+      errorElement.setAttribute("role", "alert");
+      errorElement.setAttribute("aria-live", "polite");
+    }
+  }
 
-    fields.forEach(({ input, key, rule, msg }) => {
-      const errorEl = document.getElementById(`${key}Error`);
-      const value = input.value;
-      if (!rule(value)) {
-        errorEl.textContent = msg;
-        input.classList.add("border-red-500");
-        isValid = false;
-      } else {
-        errorEl.textContent = "";
-        input.classList.remove("border-red-500");
-      }
-    });
+  if (input) {
+    input.classList.toggle("border-red-500", Boolean(message));
+    input.setAttribute("aria-invalid", String(Boolean(message)));
+    if (message) {
+      input.setAttribute("aria-describedby", `${fieldId}Error`);
+    }
+  }
+}
 
-    const resumeError = document.getElementById("resumeError");
-    const selectedFile = resume.files && resume.files[0];
+function setGroupError(groupName, message) {
+  const errorElement = document.getElementById(`${groupName}Error`);
+  const inputs = document.querySelectorAll(`input[name='${groupName}']`);
 
-    if (!selectedFile) {
-      resumeError.textContent = t.resumeRequired;
-      resume.classList.add("border-red-500");
+  if (errorElement) {
+    errorElement.textContent = message;
+    if (message) {
+      errorElement.setAttribute("role", "alert");
+      errorElement.setAttribute("aria-live", "polite");
+    }
+  }
+
+  inputs.forEach((input) => {
+    input.closest("label")?.classList.toggle("border-red-500", Boolean(message));
+    input.setAttribute("aria-invalid", String(Boolean(message)));
+    if (message) {
+      input.setAttribute("aria-describedby", `${groupName}Error`);
+    }
+  });
+}
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function isValidPhone(value) {
+  return /^\+\d{1,3}[\d\s().-]{7,20}$/.test(value);
+}
+
+function isValidWebsite(value) {
+  if (!value) {
+    return true;
+  }
+
+  if (!/^https?:\/\//i.test(value)) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value);
+    return Boolean(url.hostname.includes("."));
+  } catch (error) {
+    return false;
+  }
+}
+
+function hasFirstAndLastName(value) {
+  return value.split(/\s+/).filter(Boolean).length >= 2;
+}
+
+function shouldShowLowVolumeWarning() {
+  const monthlyVolume = document.getElementById("monthlyVolume");
+  const productType = document.getElementById("productType");
+
+  return trimValue(monthlyVolume) === "0-100" && trimValue(productType) !== "";
+}
+
+function updateVolumeWarning() {
+  const warning = document.getElementById("volumeWarning");
+
+  if (!warning) {
+    return;
+  }
+
+  warning.textContent = LOW_VOLUME_WARNING;
+  warning.classList.toggle("hidden", !shouldShowLowVolumeWarning());
+}
+
+function updateCommentsCounter() {
+  const comments = document.getElementById("comments");
+  const counter = document.getElementById("commentsCounter");
+
+  if (!comments || !counter) {
+    return;
+  }
+
+  counter.textContent = `${comments.value.length}/500`;
+}
+
+function validateLeadForm() {
+  const companyName = document.getElementById("companyName");
+  const contactPerson = document.getElementById("contactPerson");
+  const corporateEmail = document.getElementById("corporateEmail");
+  const phone = document.getElementById("phone");
+  const companyWebsite = document.getElementById("companyWebsite");
+  const operatingCountry = document.getElementById("operatingCountry");
+  const productType = document.getElementById("productType");
+  const monthlyVolume = document.getElementById("monthlyVolume");
+  const comments = document.getElementById("comments");
+  const privacyPolicy = document.getElementById("privacyPolicy");
+
+  let isValid = true;
+  let firstErrorField = null;
+
+  const checks = [
+    ["companyName", trimValue(companyName).length >= 2, ERROR_MESSAGES.companyName],
+    ["contactPerson", hasFirstAndLastName(trimValue(contactPerson)), ERROR_MESSAGES.contactPerson],
+    ["corporateEmail", isValidEmail(trimValue(corporateEmail)), ERROR_MESSAGES.corporateEmail],
+    ["phone", isValidPhone(trimValue(phone)), ERROR_MESSAGES.phone],
+    ["companyWebsite", isValidWebsite(trimValue(companyWebsite)), ERROR_MESSAGES.companyWebsite],
+    ["operatingCountry", trimValue(operatingCountry) !== "", ERROR_MESSAGES.operatingCountry],
+    ["productType", trimValue(productType) !== "", ERROR_MESSAGES.productType],
+    ["monthlyVolume", trimValue(monthlyVolume) !== "", ERROR_MESSAGES.monthlyVolume],
+    ["comments", !comments || comments.value.length <= 500, ERROR_MESSAGES.comments],
+    ["privacyPolicy", Boolean(privacyPolicy?.checked), ERROR_MESSAGES.privacyPolicy]
+  ];
+
+  checks.forEach(([fieldId, passes, message]) => {
+    setFieldError(fieldId, passes ? "" : message);
+    if (!passes) {
       isValid = false;
-    } else {
-      const allowedTypes = [
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      ];
-      const allowedExtensions = ["pdf", "doc", "docx"];
-      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-      const isKnownMime = selectedFile.type && allowedTypes.includes(selectedFile.type);
-      const isKnownExtension = allowedExtensions.includes(fileExtension);
-
-      if (!isKnownMime && !isKnownExtension) {
-        resumeError.textContent = t.resumeType;
-        resume.classList.add("border-red-500");
-        isValid = false;
-      } else {
-        resumeError.textContent = "";
-        resume.classList.remove("border-red-500");
-      }
-    }
-
-    if (!isValid) {
-      status.textContent = t.fixFields;
-      status.classList.remove("text-green-700");
-      status.classList.add("text-red-700");
-      return;
-    }
-
-    try {
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.classList.add("opacity-70", "cursor-not-allowed");
-      }
-
-      status.textContent = t.sending;
-      status.classList.remove("text-red-700", "text-green-700");
-      status.classList.add("text-gray-700");
-
-      const formData = new FormData(applicationForm);
-      const response = await fetch(APPLICATION_ENDPOINT, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json"
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error("Submission failed");
-      }
-
-      status.textContent = t.success;
-      status.classList.remove("text-gray-700", "text-red-700");
-      status.classList.add("text-green-700");
-      applicationForm.reset();
-    } catch (error) {
-      status.textContent = t.failure;
-      status.classList.remove("text-gray-700", "text-green-700");
-      status.classList.add("text-red-700");
-    } finally {
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.classList.remove("opacity-70", "cursor-not-allowed");
+      if (!firstErrorField) {
+        firstErrorField = document.getElementById(fieldId);
       }
     }
   });
+
+  const servicesSelected = getSelectedServices().length > 0;
+  setGroupError("servicesOfInterest", servicesSelected ? "" : ERROR_MESSAGES.servicesOfInterest);
+  if (!servicesSelected) {
+    isValid = false;
+    if (!firstErrorField) {
+      firstErrorField = document.querySelector("input[name='servicesOfInterest']");
+    }
+  }
+
+  const threePLSelected = Boolean(getSelectedThreePL());
+  setGroupError("current3pl", threePLSelected ? "" : ERROR_MESSAGES.current3pl);
+  if (!threePLSelected) {
+    isValid = false;
+    if (!firstErrorField) {
+      firstErrorField = document.querySelector("input[name='current3pl']");
+    }
+  }
+
+  if (!isValid && firstErrorField) {
+    firstErrorField.focus();
+    firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  updateVolumeWarning();
+  return isValid;
+}
+
+function showStatus(message, type) {
+  const status = document.getElementById("formStatus");
+
+  if (!status) {
+    return;
+  }
+
+  status.innerHTML = message;
+  status.classList.remove("bg-red-50", "bg-emerald-50", "p-4", "text-red-700", "text-emerald-800");
+
+  if (type === "success") {
+    status.classList.add("bg-emerald-50", "p-4", "text-emerald-800");
+  }
+
+  if (type === "error") {
+    status.classList.add("bg-red-50", "p-4", "text-red-700");
+  }
+}
+
+if (leadForm) {
+  const comments = document.getElementById("comments");
+  const monthlyVolume = document.getElementById("monthlyVolume");
+  const productType = document.getElementById("productType");
+
+  comments?.addEventListener("input", updateCommentsCounter);
+  monthlyVolume?.addEventListener("change", updateVolumeWarning);
+  productType?.addEventListener("change", updateVolumeWarning);
+
+  leadForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (!validateLeadForm()) {
+      showStatus("Please correct the highlighted fields before submitting.", "error");
+      return;
+    }
+
+    showStatus(SUCCESS_MESSAGE, "success");
+    leadForm.reset();
+    updateCommentsCounter();
+    updateVolumeWarning();
+  });
+
+  updateCommentsCounter();
+  updateVolumeWarning();
 }

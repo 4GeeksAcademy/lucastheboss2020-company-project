@@ -49,6 +49,21 @@ ai-engineering-project-template/
 4. **Read** `AGENTS.md` so you know which skills are available when working with AI.
 5. **Build** your milestone deliverables inside `apps/`, reusing `packages/shared-types` and `pipelines/data` as needed.
 
+## TrackFlow local commands
+
+This project includes the TrackFlow company website plus a Next.js App Router lead-candidate workflow for milestone 3.
+
+```bash
+npm install
+npm run dev
+npm run typecheck
+npm run build
+```
+
+- `npm run dev` starts the app at `http://localhost:3000`.
+- `npm run typecheck` runs the documented TypeScript validation command with `tsc --noEmit`.
+- `npm run build` validates the production Next.js App Router build.
+
 ---
 
 ## Milestones (reference)

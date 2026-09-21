@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>PAB Restoration | New York Masonry & Waterproofing</title>
+	<title>TrackFlow | E-commerce Logistics in the United States and Spain</title>
 	<meta
 		name="description"
-		content="PAB Restoration is a New York construction company specializing in pointing, caulking, and exterior waterproofing."
+		content="TrackFlow provides warehouse management, last-mile delivery, and reverse logistics for e-commerce brands in the United States and Spain."
 	/>
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script>
@@ -14,58 +14,101 @@
 			theme: {
 				extend: {
 					colors: {
-						brandRed: "#b91c1c",
-						brandLight: "#fee2e2"
+						trackBlue: "#0f3d5e",
+						trackInk: "#10212b",
+						trackMint: "#35b7a0",
+						trackSand: "#f4efe6"
 					}
 				}
 			}
 		};
 	</script>
+	<style>
+		/* Enhanced keyboard focus styles for accessibility */
+		input:focus,
+		select:focus,
+		textarea:focus {
+			outline: 3px solid #35b7a0;
+			outline-offset: 2px;
+		}
+		
+		button:focus-visible,
+		a:focus-visible {
+			outline: 3px solid #0f3d5e;
+			outline-offset: 2px;
+		}
+
+		/* Ensure error states are visible */
+		input[aria-invalid="true"],
+		select[aria-invalid="true"],
+		textarea[aria-invalid="true"] {
+			border-color: #dc2626;
+			background-color: #fee2e2;
+		}
+
+		/* High contrast mode support */
+		@media (prefers-contrast: more) {
+			input,
+			select,
+			textarea {
+				border-width: 2px;
+			}
+		}
+	</style>
 	<script type="application/ld+json">
 		{
 			"@context": "https://schema.org",
-			"@type": "ConstructionCompany",
-			"name": "PAB Restoration",
-			"description": "Specialized construction company focused on pointing, caulking, and waterproofing.",
-			"areaServed": "New York",
-			"telephone": "+1-646-555-0142",
-			"email": "contact@pabrestorationny.com",
-			"url": "https://www.pabrestorationny.com",
-			"address": {
-				"@type": "PostalAddress",
-				"streetAddress": "37-18 24th Street",
-				"addressLocality": "Astoria",
-				"addressRegion": "NY",
-				"postalCode": "11101",
-				"addressCountry": "US"
+			"@type": "Organization",
+			"name": "TrackFlow",
+			"description": "Warehouse management and last-mile deliveries for e-commerce",
+			"url": "https://trackflow.com",
+			"foundingDate": "2009",
+			"address": [
+				{
+					"@type": "PostalAddress",
+					"addressCountry": "US",
+					"addressLocality": "Los Angeles",
+					"addressRegion": "California"
+				},
+				{
+					"@type": "PostalAddress",
+					"addressCountry": "ES",
+					"addressLocality": "Zaragoza",
+					"addressRegion": "Arag\u00f3n"
+				}
+			],
+			"contactPoint": {
+				"@type": "ContactPoint",
+				"telephone": "+1-213-555-0147",
+				"contactType": "sales",
+				"availableLanguage": ["Spanish", "English"]
 			},
-			"founder": {
-				"@type": "Person",
-				"jobTitle": "Exterior Waterproofing Mason"
-			},
-			"serviceType": [
-				"Pointing",
-				"Caulking",
-				"Waterproofing"
+			"sameAs": ["https://linkedin.com/company/trackflow"],
+			"areaServed": [
+				{
+					"@type": "Country",
+					"name": "United States"
+				},
+				{
+					"@type": "Country",
+					"name": "Spain"
+				}
 			]
 		}
 	</script>
 </head>
-<body class="bg-white text-gray-800 antialiased">
-	<header class="fixed top-0 left-0 right-0 z-50 border-b border-red-100 bg-white/95 backdrop-blur">
+<body class="bg-slate-50 text-trackInk antialiased">
+	<header class="fixed left-0 right-0 top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
 		<nav class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6" aria-label="Primary navigation">
-			<a href="#home" class="flex items-center gap-3">
-				<img
-					src="https://image2url.com/r2/default/images/1774986174719-0d211863-f17c-4b69-b8f4-4815206b7d4a.png"
-					alt="PAB Restoration logo"
-					class="h-11 w-auto rounded border border-red-200 object-cover"
-				/>
+			<a href="#home" class="flex items-center gap-3 font-black tracking-tight text-trackBlue">
+				<span class="grid h-11 w-11 place-items-center rounded bg-trackBlue text-lg text-white">TF</span>
+				<span class="text-2xl">TrackFlow</span>
 			</a>
 
 			<button
 				id="menuToggle"
 				type="button"
-				class="inline-flex items-center rounded border border-red-300 px-3 py-2 text-red-800 md:hidden"
+				class="inline-flex items-center rounded border border-trackBlue px-3 py-2 text-trackBlue md:hidden"
 				aria-expanded="false"
 				aria-controls="primaryMenu"
 			>
@@ -74,280 +117,280 @@
 			</button>
 
 			<ul id="primaryMenu" class="hidden w-full flex-col gap-2 text-sm font-semibold sm:text-base md:flex md:w-auto md:flex-row md:items-center md:gap-4">
-				<li><a href="#home" class="rounded px-3 py-2 text-red-700 transition hover:bg-red-50">Home</a></li>
-				<li><a href="application.html" class="rounded bg-brandRed px-3 py-2 text-white transition hover:bg-red-700">Apply Now</a></li>
-				<li><a href="#about" class="rounded px-3 py-2 text-red-700 transition hover:bg-red-50">About</a></li>
-				<li><a href="#services" class="rounded px-3 py-2 text-red-700 transition hover:bg-red-50">Services</a></li>
-				<li><a href="#contact" class="rounded px-3 py-2 text-red-700 transition hover:bg-red-50">Contact Us</a></li>
+				<li><a href="#home" class="rounded px-3 py-2 text-trackBlue transition hover:bg-slate-100">Home</a></li>
+				<li><a href="#services" class="rounded px-3 py-2 text-trackBlue transition hover:bg-slate-100">Services</a></li>
+				<li><a href="#coverage" class="rounded px-3 py-2 text-trackBlue transition hover:bg-slate-100">Coverage</a></li>
+				<li><a href="#contact" class="rounded bg-trackMint px-3 py-2 text-trackInk transition hover:bg-emerald-300">Contact</a></li>
 			</ul>
 
 			<button
 				id="languageToggle"
 				type="button"
-				class="inline-flex items-center gap-2 rounded border border-red-300 px-3 py-2 font-semibold text-red-800 transition hover:bg-red-50"
+				class="inline-flex items-center gap-2 rounded border border-slate-300 px-3 py-2 font-semibold text-trackBlue transition hover:bg-slate-100"
 				aria-label="Cambiar idioma a español"
 				title="Cambiar a español"
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.9 9h-3.02a15.5 15.5 0 00-1.16-5.03A8.03 8.03 0 0118.9 11zM12 4c.94 1.35 1.62 3.15 1.88 5h-3.76C10.38 7.15 11.06 5.35 12 4zM4.1 13h3.02c.13 1.8.55 3.53 1.16 5.03A8.03 8.03 0 014.1 13zm3.02-2H4.1a8.03 8.03 0 014.18-5.03A15.5 15.5 0 007.12 11zM12 20c-.94-1.35-1.62-3.15-1.88-5h3.76c-.26 1.85-.94 3.65-1.88 5zm2.12-7h-4.24A13.6 13.6 0 019.9 11h4.2c.02.67.02 1.33.02 2zm.6 5.03c.61-1.5 1.03-3.23 1.16-5.03h3.02a8.03 8.03 0 01-4.18 5.03z"/></svg>
 				<span id="languageToggleLabel">ES</span>
 			</button>
 		</nav>
 	</header>
 
-	<main class="pt-24" id="home">
-		<section class="relative overflow-hidden border-b border-red-100 bg-gradient-to-br from-red-50 via-white to-red-100">
-			<article class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-24">
+	<main id="home" class="pt-20">
+		<section class="overflow-hidden bg-trackSand">
+			<article class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr,0.95fr] lg:items-center lg:py-24">
 				<header class="space-y-6">
-					<p class="inline-block rounded-full bg-red-100 px-4 py-1 text-sm font-semibold uppercase tracking-wide text-red-700">Trusted In New York</p>
-					<h1 class="text-4xl font-extrabold leading-tight text-red-800 sm:text-5xl">Exterior Masonry Protection That Lasts</h1>
-					<p class="max-w-xl text-lg text-gray-700">
-						PAB Restoration delivers precision craftsmanship in pointing, caulking, and waterproofing for residential and commercial properties.
+					<p class="inline-flex rounded-full bg-white px-4 py-2 text-sm font-bold uppercase tracking-wide text-trackBlue shadow-sm">Los Angeles + Zaragoza</p>
+					<h1 class="max-w-3xl text-4xl font-black leading-tight text-trackInk sm:text-6xl">Logistics that scales with your e-commerce</h1>
+					<p class="max-w-2xl text-lg leading-8 text-slate-700">
+						Warehouse management, last-mile deliveries, and reverse logistics in the United States and Spain. Over 15 years helping fashion, electronics, and cosmetics brands grow without worrying about operations.
 					</p>
 					<nav class="flex flex-wrap gap-3" aria-label="Homepage call to action">
-						<a href="application.html" class="rounded bg-brandRed px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-red-700">Apply Now</a>
-						<a href="#services" class="rounded border border-red-300 px-6 py-3 font-semibold text-red-700 transition hover:bg-red-50">View Services</a>
+						<a href="#lead-form" class="rounded bg-trackBlue px-6 py-3 font-bold text-white shadow-sm transition hover:bg-slate-800">Request information</a>
+						<a href="#services" class="rounded border border-trackBlue px-6 py-3 font-bold text-trackBlue transition hover:bg-white">View services</a>
 					</nav>
 				</header>
 
-				<figure class="rounded-2xl border border-red-200 bg-white p-3 shadow-xl">
+				<figure class="relative min-h-80 overflow-hidden rounded border border-white bg-trackBlue shadow-xl">
 					<img
-						src="https://www.bhg.com/thmb/pn7vtFMTjmxBJ8hrlWZ6dquL4cc=/4000x0/filters:no_upscale():strip_icc()/What-is-Tuckpointing-184609922-b211a2ec13804edd98386a6375635338.jpg"
-						alt="Masonry restoration project"
-						class="h-full w-full rounded-xl object-cover"
+						src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+						alt="Warehouse team preparing e-commerce shipments"
+						class="h-full min-h-80 w-full object-cover opacity-90"
 					/>
+					<figcaption class="absolute bottom-0 left-0 right-0 bg-trackInk/85 p-5 text-white">
+						<p class="text-sm font-semibold uppercase tracking-wide text-trackMint">Founded in 2009</p>
+						<p class="mt-1 text-lg font-bold">130 logistics professionals serving binational e-commerce operations.</p>
+					</figcaption>
 				</figure>
-			</article>
-		</section>
-
-		<section class="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-label="Quick highlights" data-reveal>
-			<h2 class="mb-6 text-2xl font-bold text-red-800">Why Property Owners Choose PAB Restoration</h2>
-			<ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-				<li class="rounded-2xl border border-red-200 bg-white p-6 shadow-sm">
-					<h3 class="text-lg font-bold text-red-700">Owner-Led Craftsmanship</h3>
-					<p class="mt-2 text-gray-700">Every project is guided by an exterior waterproofing mason with extensive field expertise.</p>
-				</li>
-				<li class="rounded-2xl border border-red-200 bg-white p-6 shadow-sm">
-					<h3 class="text-lg font-bold text-red-700">Built For New York Weather</h3>
-					<p class="mt-2 text-gray-700">Solutions are designed to stand up to freeze-thaw cycles, rainfall, and urban wear.</p>
-				</li>
-				<li class="rounded-2xl border border-red-200 bg-white p-6 shadow-sm">
-					<h3 class="text-lg font-bold text-red-700">Clear, Reliable Communication</h3>
-					<p class="mt-2 text-gray-700">Fast scheduling, transparent updates, and dependable timelines from start to finish.</p>
-				</li>
-			</ul>
-		</section>
-
-		<section id="about" class="border-y border-red-100 bg-red-50/50" data-reveal>
-			<article class="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center">
-				<figure class="rounded-2xl border border-red-200 bg-white p-3 shadow-md">
-					<img
-						src="https://www.aaa1masonry.com/img/lexicon/scaffolding-01-410px.jpg"
-						alt="Exterior waterproofing team at work"
-						class="h-full w-full rounded-xl object-cover"
-					/>
-				</figure>
-
-				<header class="space-y-5">
-					<h2 class="text-3xl font-bold text-red-800">About PAB Restoration</h2>
-					<p class="text-gray-700">
-						PAB Restoration is a specialized construction company dedicated to protecting and preserving building exteriors through expert masonry and waterproofing services. Founded and owned by a seasoned exterior waterproofing mason, the company brings hands-on craftsmanship, technical precision, and decades of field experience to every project.
-					</p>
-					<p class="text-gray-700">
-						PAB Restoration focuses on three core services. pointing, caulking, and waterproofing-ensuring that residential, commercial, and multi-unit properties remain structurally sound, weather-resistant, and visually appealing. With a deep understanding of how water, time, and climate impact masonry structures, the company approaches each job with a commitment to long-term durability and meticulous detail.
-					</p>
-				</header>
 			</article>
 		</section>
 
 		<section id="services" class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-labelledby="services-heading" data-reveal>
-			<header class="mb-10">
-				<h2 id="services-heading" class="text-3xl font-bold text-red-800">Our Services</h2>
-				<p class="mt-2 max-w-3xl text-gray-700">Comprehensive exterior restoration services for New York properties.</p>
+			<header class="mb-10 max-w-3xl">
+				<h2 id="services-heading" class="text-3xl font-black text-trackBlue">Services</h2>
+				<p class="mt-3 text-lg text-slate-700">Integrated operations for mid-sized fashion, electronics, and cosmetics e-commerce brands.</p>
 			</header>
 
-			<section class="space-y-6">
-				<article class="grid gap-5 rounded-2xl border border-red-200 bg-white p-5 shadow-sm md:grid-cols-[1fr,2fr] md:items-center">
-					<figure>
-						<img src="https://media.istockphoto.com/id/182176654/photo/bricklayer-repointing-old-bricks.jpg?s=612x612&w=0&k=20&c=tdhTKUBQ8PR64QtMQCptbbDHZ5jLQx4oW22mTpMiwgw=" alt="Brick and stone pointing" class="h-52 w-full rounded-xl object-cover" />
-					</figure>
-					<section>
-						<h3 class="text-2xl font-bold text-red-700">Brick and Stone Pointing</h3>
-						<ul class="mt-3 list-disc space-y-1 pl-5 text-gray-700">
-							<li>Removal of deteriorated mortar</li>
-							<li>Installation of new, properly matched mortar</li>
-							<li>Structural reinforcement of masonry walls</li>
-							<li>Improved appearance and extended building lifespan</li>
-						</ul>
-						<p class="mt-3 text-gray-700">Pointing restores the integrity of brick and stone surfaces, preventing water penetration and preserving the building's original character.</p>
-					</section>
+			<section class="grid gap-6 md:grid-cols-3">
+				<article class="rounded border border-slate-200 bg-white p-6 shadow-sm">
+					<h3 class="text-2xl font-black text-trackInk">Warehouse Management</h3>
+					<ul class="mt-5 list-disc space-y-3 pl-5 text-slate-700">
+						<li>Storage, picking and packing</li>
+						<li>Real-time inventory</li>
+						<li>We operate warehouses in Los Angeles and Zaragoza</li>
+					</ul>
 				</article>
 
-				<article class="grid gap-5 rounded-2xl border border-red-200 bg-white p-5 shadow-sm md:grid-cols-[1fr,2fr] md:items-center">
-					<figure>
-						<img src="https://blackdiamondcaulking.com.au/wp-content/uploads/2025/11/best-sealant-for-Australian-weather-blackdiamondcaulking-1024x536.webp" alt="Professional caulking" class="h-52 w-full rounded-xl object-cover" />
-					</figure>
-					<section>
-						<h3 class="text-2xl font-bold text-red-700">Professional Caulking Services</h3>
-						<ul class="mt-3 list-disc space-y-1 pl-5 text-gray-700">
-							<li>Joint sealing around windows, doors, and facade transitions</li>
-							<li>Expansion joint caulking</li>
-							<li>High-performance sealants for long-term flexibility and adhesion</li>
-						</ul>
-						<p class="mt-3 text-gray-700">Proper caulking prevents air leaks, water infiltration, and energy loss while maintaining a clean, finished exterior.</p>
-					</section>
+				<article class="rounded border border-slate-200 bg-white p-6 shadow-sm">
+					<h3 class="text-2xl font-black text-trackInk">Last-Mile Deliveries</h3>
+					<ul class="mt-5 list-disc space-y-3 pl-5 text-slate-700">
+						<li>Certified carrier network in both countries</li>
+						<li>Unified shipment tracking</li>
+						<li>Incident and returns management</li>
+					</ul>
 				</article>
 
-				<article class="grid gap-5 rounded-2xl border border-red-200 bg-white p-5 shadow-sm md:grid-cols-[1fr,2fr] md:items-center">
-					<figure>
-						<img src="https://www.rubberized.com/wp-content/uploads/2022/11/Weatherproof-Your-Home.jpg" alt="Exterior waterproofing" class="h-52 w-full rounded-xl object-cover" />
-					</figure>
-					<section>
-						<h3 class="text-2xl font-bold text-red-700">Exterior Waterproofing</h3>
-						<ul class="mt-3 list-disc space-y-1 pl-5 text-gray-700">
-							<li>Above-grade waterproof coatings</li>
-							<li>Sealants and protective barriers</li>
-							<li>Crack repair and water intrusion prevention</li>
-							<li>Moisture-control solutions for masonry, concrete, and facade systems</li>
-						</ul>
-						<p class="mt-3 text-gray-700">These services protect buildings from leaks, mold, and structural damage caused by moisture exposure.</p>
-					</section>
-				</article>
-
-				<article class="grid gap-5 rounded-2xl border border-red-200 bg-white p-5 shadow-sm md:grid-cols-[1fr,2fr] md:items-center">
-					<figure>
-						<img src="https://preview.redd.it/what-are-reasonable-rates-to-charge-for-pressure-washing-v0-jxdz405xmnf71.jpg?width=640&crop=smart&auto=webp&s=f923a8905eb48031baa318d8ec64b311f8e5acd2" alt="Facade cleaning and prep" class="h-52 w-full rounded-xl object-cover" />
-					</figure>
-					<section>
-						<h3 class="text-2xl font-bold text-red-700">Facade Cleaning and Surface Prep</h3>
-						<ul class="mt-3 list-disc space-y-1 pl-5 text-gray-700">
-							<li>Power washing</li>
-							<li>Efflorescence removal</li>
-							<li>Surface preparation for coatings or repairs</li>
-						</ul>
-					</section>
-				</article>
-
-				<article class="grid gap-5 rounded-2xl border border-red-200 bg-white p-5 shadow-sm md:grid-cols-[1fr,2fr] md:items-center">
-					<figure>
-						<img src="https://www.pittsburghbrickrepair.com/wp-content/uploads/2025/04/brick_replacement_or_repair_consideration.jpg" alt="Minor masonry repairs" class="h-52 w-full rounded-xl object-cover" />
-					</figure>
-					<section>
-						<h3 class="text-2xl font-bold text-red-700">Minor Masonry Repairs</h3>
-						<ul class="mt-3 list-disc space-y-1 pl-5 text-gray-700">
-							<li>Brick replacement</li>
-							<li>Patchwork</li>
-							<li>Small-scale restoration to maintain structural integrity</li>
-						</ul>
-					</section>
-				</article>
-
-				<article class="grid gap-5 rounded-2xl border border-red-200 bg-white p-5 shadow-sm md:grid-cols-[1fr,2fr] md:items-center">
-					<figure>
-						<img src="https://copilot.microsoft.com/th/id/BCO.c67aeb19-5384-4e82-9b7a-425f83f6ee68.png" alt="Commercial and residential restoration" class="h-52 w-full rounded-xl object-cover" />
-					</figure>
-					<section>
-						<h3 class="text-2xl font-bold text-red-700">Commercial &amp; Residential Service</h3>
-						<ul class="mt-3 list-disc space-y-1 pl-5 text-gray-700">
-							<li>Multi-unit buildings</li>
-							<li>Commercial properties</li>
-							<li>Townhomes and single-family residences</li>
-						</ul>
-					</section>
+				<article class="rounded border border-slate-200 bg-white p-6 shadow-sm">
+					<h3 class="text-2xl font-black text-trackInk">Reverse Logistics</h3>
+					<ul class="mt-5 list-disc space-y-3 pl-5 text-slate-700">
+						<li>Complete returns management</li>
+						<li>Inspection and reconditioning</li>
+						<li>Integration with your sales platform</li>
+					</ul>
 				</article>
 			</section>
 		</section>
 
-		<section id="contact" class="border-t border-red-100 bg-gradient-to-b from-white to-red-50" data-reveal>
-			<article class="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-start">
-				<header class="space-y-4">
-					<h2 class="text-3xl font-bold text-red-800">Contact Us</h2>
-					<p class="text-gray-700">Reach our team quickly for quotes, scheduling, and emergency exterior water infiltration concerns.</p>
-					<nav class="flex flex-wrap gap-3" aria-label="Contact actions">
-						<a href="tel:+16465550142" class="rounded bg-brandRed px-5 py-3 font-semibold text-white transition hover:bg-red-700">Call (646) 555-0142</a>
-						<a href="mailto:contact@pabrestorationny.com" class="rounded border border-red-300 px-5 py-3 font-semibold text-red-700 transition hover:bg-red-50">Email Us</a>
-					</nav>
+		<section id="coverage" class="border-y border-slate-200 bg-white" aria-labelledby="coverage-heading" data-reveal>
+			<article class="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+				<header class="mb-10 max-w-3xl">
+					<h2 id="coverage-heading" class="text-3xl font-black text-trackBlue">Coverage</h2>
+					<p class="mt-3 text-lg text-slate-700">One logistics partner across two markets with local warehouse infrastructure and carrier relationships.</p>
 				</header>
 
-				<address class="rounded-2xl border border-red-200 bg-white p-6 not-italic shadow-sm">
-					<ul class="space-y-4 text-gray-700">
-						<li>
-							<p class="font-semibold text-red-700">Phone</p>
-							<a class="hover:underline" href="tel:+16465550142">+1 (646) 555-0142</a>
-						</li>
-						<li>
-							<p class="font-semibold text-red-700">Email</p>
-							<a class="hover:underline" href="mailto:contact@pabrestorationny.com">contact@pabrestorationny.com</a>
-						</li>
-						<li>
-							<p class="font-semibold text-red-700">Service Area</p>
-							<p>Astoria, Queens, Manhattan, Brooklyn, The Bronx, Staten Island, and nearby New York metro areas</p>
-						</li>
-						<li>
-							<p class="font-semibold text-red-700">Hours</p>
-							<p>Monday-Friday: 6:30 AM-7:00 PM</p>
-							<p>Saturday: 7:00 AM-3:00 PM</p>
-							<p>Sunday: Emergency leak response only</p>
-						</li>
-					</ul>
-				</address>
+				<section class="grid gap-6 md:grid-cols-2">
+					<article class="rounded bg-slate-50 p-6 ring-1 ring-slate-200">
+						<h3 class="text-2xl font-black text-trackInk">United States</h3>
+						<ul class="mt-5 list-disc space-y-3 pl-5 text-slate-700">
+							<li>Warehouse in Los Angeles</li>
+							<li>National coverage</li>
+							<li>Carriers: UPS, FedEx, DHL</li>
+						</ul>
+					</article>
+
+					<article class="rounded bg-slate-50 p-6 ring-1 ring-slate-200">
+						<h3 class="text-2xl font-black text-trackInk">Spain</h3>
+						<ul class="mt-5 list-disc space-y-3 pl-5 text-slate-700">
+							<li>Warehouse in Zaragoza</li>
+							<li>Peninsular and island coverage</li>
+							<li>Carriers: MRW, SEUR, DHL</li>
+						</ul>
+					</article>
+				</section>
+			</article>
+		</section>
+
+		<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-labelledby="why-heading" data-reveal>
+			<header class="mb-10 max-w-3xl">
+				<h2 id="why-heading" class="text-3xl font-black text-trackBlue">Why TrackFlow</h2>
+			</header>
+
+			<ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+				<li class="rounded bg-trackBlue p-6 font-bold text-white shadow-sm">Binational operation: The only operator with own infrastructure in the United States and Spain</li>
+				<li class="rounded bg-white p-6 font-bold text-trackInk shadow-sm ring-1 ring-slate-200">+130 professionals dedicated to your logistics</li>
+				<li class="rounded bg-white p-6 font-bold text-trackInk shadow-sm ring-1 ring-slate-200">Own technology for total visibility of your inventory</li>
+				<li class="rounded bg-trackMint p-6 font-bold text-trackInk shadow-sm">E-commerce specialization in fashion, electronics, and cosmetics</li>
+			</ul>
+		</section>
+
+		<section id="contact" class="bg-trackInk text-white" aria-labelledby="contact-heading" data-reveal>
+			<article class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.8fr,1.2fr] lg:items-start">
+				<header class="space-y-6">
+					<h2 id="contact-heading" class="text-3xl font-black">Contact</h2>
+					<p class="text-lg leading-8 text-slate-200">Tell us about your monthly volume, product category, countries, and services of interest. Miguel Torres and the commercial team will review your request.</p>
+					<address class="space-y-3 not-italic text-slate-100">
+						<p>Email: <a href="mailto:comercial@trackflow.com" class="font-semibold text-trackMint hover:underline">comercial@trackflow.com</a></p>
+						<p>Los Angeles: <a href="tel:+12135550147" class="font-semibold text-trackMint hover:underline">+1 213 555 0147</a></p>
+						<p>Zaragoza: <a href="tel:+34976123456" class="font-semibold text-trackMint hover:underline">+34 976 123 456</a></p>
+					</address>
+				</header>
+
+				<form id="lead-form" class="rounded bg-white p-6 text-trackInk shadow-xl sm:p-8" novalidate>
+					<h3 class="text-2xl font-black text-trackBlue">Request information</h3>
+					<p class="mt-2 text-slate-700">Complete the form and our commercial team will contact you within 24-48 hours.</p>
+
+					<section class="mt-8 grid gap-5 md:grid-cols-2">
+						<p>
+							<label for="companyName" class="mb-2 block text-sm font-bold text-slate-700">Company name</label>
+							<input id="companyName" name="companyName" type="text" class="w-full rounded border border-slate-300 px-4 py-3 transition" autocomplete="organization" required />
+							<span id="companyNameError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="contactPerson" class="mb-2 block text-sm font-bold text-slate-700">Contact person</label>
+							<input id="contactPerson" name="contactPerson" type="text" class="w-full rounded border border-slate-300 px-4 py-3 transition" autocomplete="name" required />
+							<span id="contactPersonError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="corporateEmail" class="mb-2 block text-sm font-bold text-slate-700">Corporate email</label>
+							<input id="corporateEmail" name="corporateEmail" type="email" class="w-full rounded border border-slate-300 px-4 py-3 transition" autocomplete="email" required />
+							<span id="corporateEmailError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="phone" class="mb-2 block text-sm font-bold text-slate-700">Phone</label>
+							<input id="phone" name="phone" type="tel" class="w-full rounded border border-slate-300 px-4 py-3 transition" autocomplete="tel" placeholder="+1 213 555 0147" required />
+							<span id="phoneError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="companyWebsite" class="mb-2 block text-sm font-bold text-slate-700">Company website</label>
+							<input id="companyWebsite" name="companyWebsite" type="url" class="w-full rounded border border-slate-300 px-4 py-3 transition" autocomplete="url" placeholder="https://example.com" />
+							<span id="companyWebsiteError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="operatingCountry" class="mb-2 block text-sm font-bold text-slate-700">Main operating country</label>
+							<select id="operatingCountry" name="operatingCountry" class="w-full rounded border border-slate-300 px-4 py-3 transition" required>
+								<option value="">Select an option</option>
+								<option value="United States">United States</option>
+								<option value="Spain">Spain</option>
+								<option value="Both">Both</option>
+								<option value="Other">Other</option>
+							</select>
+							<span id="operatingCountryError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="productType" class="mb-2 block text-sm font-bold text-slate-700">Product type</label>
+							<select id="productType" name="productType" class="w-full rounded border border-slate-300 px-4 py-3 transition" required>
+								<option value="">Select an option</option>
+								<option value="Fashion">Fashion</option>
+								<option value="Electronics">Electronics</option>
+								<option value="Cosmetics">Cosmetics</option>
+								<option value="Food">Food</option>
+								<option value="Other">Other</option>
+							</select>
+							<span id="productTypeError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+
+						<p>
+							<label for="monthlyVolume" class="mb-2 block text-sm font-bold text-slate-700">Estimated monthly shipping volume</label>
+							<select id="monthlyVolume" name="monthlyVolume" class="w-full rounded border border-slate-300 px-4 py-3 transition" required>
+								<option value="">Select an option</option>
+								<option value="0-100">0-100</option>
+								<option value="101-500">101-500</option>
+								<option value="501-2000">501-2000</option>
+								<option value="2000+">2000+</option>
+								<option value="Not sure">Not sure</option>
+							</select>
+							<span id="monthlyVolumeError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+						</p>
+					</section>
+
+					<fieldset class="mt-5">
+						<legend class="mb-2 block text-sm font-bold text-slate-700">Services of interest</legend>
+						<section class="grid gap-3 sm:grid-cols-3">
+							<label class="flex items-center gap-3 rounded border border-slate-300 px-4 py-3"><input type="checkbox" name="servicesOfInterest" value="Warehousing" class="h-4 w-4 accent-trackBlue" /> Warehousing</label>
+							<label class="flex items-center gap-3 rounded border border-slate-300 px-4 py-3"><input type="checkbox" name="servicesOfInterest" value="Last mile" class="h-4 w-4 accent-trackBlue" /> Last mile</label>
+							<label class="flex items-center gap-3 rounded border border-slate-300 px-4 py-3"><input type="checkbox" name="servicesOfInterest" value="Reverse logistics" class="h-4 w-4 accent-trackBlue" /> Reverse logistics</label>
+						</section>
+						<span id="servicesOfInterestError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+					</fieldset>
+
+					<fieldset class="mt-5">
+						<legend class="mb-2 block text-sm font-bold text-slate-700">Do you currently work with another 3PL?</legend>
+						<section class="grid gap-3 sm:grid-cols-3">
+							<label class="flex items-center gap-3 rounded border border-slate-300 px-4 py-3"><input type="radio" name="current3pl" value="Yes" class="h-4 w-4 accent-trackBlue" /> Yes</label>
+							<label class="flex items-center gap-3 rounded border border-slate-300 px-4 py-3"><input type="radio" name="current3pl" value="No" class="h-4 w-4 accent-trackBlue" /> No</label>
+							<label class="flex items-center gap-3 rounded border border-slate-300 px-4 py-3"><input type="radio" name="current3pl" value="Evaluating options" class="h-4 w-4 accent-trackBlue" /> Evaluating options</label>
+						</section>
+						<span id="current3plError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+					</fieldset>
+
+					<p class="mt-5">
+						<label for="comments" class="mb-2 block text-sm font-bold text-slate-700">Comments or specific needs</label>
+						<textarea id="comments" name="comments" rows="5" maxlength="500" class="w-full rounded border border-slate-300 px-4 py-3 transition"></textarea>
+						<span class="mt-1 flex items-center justify-between gap-3 text-sm">
+							<span id="commentsError" class="font-semibold text-red-700"></span>
+							<span id="commentsCounter" class="text-slate-500">0/500</span>
+						</span>
+					</p>
+
+					<p id="volumeWarning" class="mt-5 hidden rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900" role="alert">
+						For volumes under 100 monthly shipments, our services might not be the most efficient solution. Are you sure you want to continue?
+					</p>
+
+					<p class="mt-5">
+						<label class="flex items-start gap-3 rounded border border-slate-300 px-4 py-3">
+							<input id="privacyPolicy" name="privacyPolicy" type="checkbox" class="mt-1 h-4 w-4 accent-trackBlue" required />
+							<span>I accept the privacy policy</span>
+						</label>
+						<span id="privacyPolicyError" class="mt-1 block text-sm font-semibold text-red-700"></span>
+					</p>
+
+					<p class="mt-6">
+						<button type="submit" class="rounded bg-trackBlue px-6 py-3 font-bold text-white transition hover:bg-slate-800">Submit request</button>
+					</p>
+
+					<output id="formStatus" class="mt-6 block rounded text-sm font-semibold"></output>
+				</form>
 			</article>
 		</section>
 	</main>
 
-	<footer class="border-t border-red-200 bg-red-900 text-red-50">
-		<section class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
-			<article>
-				<h2 class="text-lg font-bold">PAB Restoration</h2>
-				<img
-					src="https://image2url.com/r2/default/images/1774986174719-0d211863-f17c-4b69-b8f4-4815206b7d4a.png"
-					alt="PAB Restoration footer logo"
-					class="mt-3 h-14 w-auto rounded border border-red-200/30"
-				/>
-			</article>
-
-			<address class="not-italic">
-				<h2 class="text-lg font-bold">Contact</h2>
-				<p class="mt-3"><a href="tel:+16465550142" class="hover:underline">+1 (646) 555-0142</a></p>
-				<p class="mt-1"><a href="mailto:contact@pabrestorationny.com" class="hover:underline">contact@pabrestorationny.com</a></p>
-			</address>
-
-			<nav aria-label="Footer quick links">
-				<h2 class="text-lg font-bold">Quick Links</h2>
-				<ul class="mt-3 space-y-2">
-					<li><a class="hover:underline" href="#home">Home</a></li>
-					<li><a class="hover:underline" href="application.html">Apply Now</a></li>
-					<li><a class="hover:underline" href="#about">About</a></li>
-					<li><a class="hover:underline" href="#services">Services</a></li>
-					<li><a class="hover:underline" href="#contact">Contact Us</a></li>
-				</ul>
-			</nav>
-
-			<section aria-label="Social media">
-				<h2 class="text-lg font-bold">Follow Us</h2>
-				<ul class="mt-3 flex items-center gap-4">
-					<li>
-						<a href="#" aria-label="Facebook" class="inline-flex rounded border border-red-200/40 p-2 hover:bg-red-800">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true"><path d="M13.5 9H16V6h-2.5C10.5 6 9 7.8 9 10.4V12H7v3h2v6h3v-6h2.4l.6-3H12v-1.4c0-1 .4-1.6 1.5-1.6z"/></svg>
-						</a>
-					</li>
-					<li>
-						<a href="#" aria-label="Instagram" class="inline-flex rounded border border-red-200/40 p-2 hover:bg-red-800">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm11 2a2 2 0 110 4 2 2 0 010-4zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/></svg>
-						</a>
-					</li>
-					<li>
-						<a href="#" aria-label="LinkedIn" class="inline-flex rounded border border-red-200/40 p-2 hover:bg-red-800">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true"><path d="M6.94 8.5a1.72 1.72 0 110-3.44 1.72 1.72 0 010 3.44zM5.5 9.75h2.9V19H5.5V9.75zm5 0h2.78v1.26h.04c.39-.73 1.34-1.5 2.76-1.5 2.95 0 3.49 1.94 3.49 4.46V19h-2.9v-4.41c0-1.05-.02-2.4-1.46-2.4-1.46 0-1.68 1.14-1.68 2.32V19h-2.9V9.75z"/></svg>
-						</a>
-					</li>
-				</ul>
-			</section>
+	<footer class="bg-white text-trackInk">
+		<section class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between">
+			<p class="font-black text-trackBlue">TrackFlow</p>
+			<ul class="flex flex-wrap gap-4 text-sm font-semibold text-slate-700">
+				<li>&copy; 2025 TrackFlow. All rights reserved.</li>
+				<li><a href="https://linkedin.com/company/trackflow" class="text-trackBlue hover:underline">LinkedIn</a></li>
+			</ul>
 		</section>
-
-		<p class="border-t border-red-800 px-4 py-4 text-center text-sm text-red-100 sm:px-6">Copyright &copy; 2026 PAB Restoration. All rights reserved.</p>
 	</footer>
 
 	<script src="i18n.js"></script>
+	<script src="validation.js"></script>
 	<script>
 		const menuToggle = document.getElementById("menuToggle");
 		const primaryMenu = document.getElementById("primaryMenu");

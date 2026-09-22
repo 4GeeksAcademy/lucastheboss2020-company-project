@@ -40,13 +40,6 @@
       "static/chunks/972-f3205441e81cddcf.js",
       "static/chunks/app/candidates/page-a17e9684371f2543.js"
     ],
-    "/login/page": [
-      "static/chunks/webpack-c81f7fd28659d64f.js",
-      "static/chunks/fd9d1056-e74038e1fede4be0.js",
-      "static/chunks/117-1e28fe9d9f24a2c9.js",
-      "static/chunks/main-app-e8c377d95817b565.js",
-      "static/chunks/app/login/page-5441de5928bcf51c.js"
-    ],
     "/page": [
       "static/chunks/webpack-c81f7fd28659d64f.js",
       "static/chunks/fd9d1056-e74038e1fede4be0.js",
@@ -77,6 +70,13 @@
       "static/chunks/117-1e28fe9d9f24a2c9.js",
       "static/chunks/main-app-e8c377d95817b565.js",
       "static/chunks/app/uis/backoffice/suppliers/page-0aa4f9a84da32cb5.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack-c81f7fd28659d64f.js",
+      "static/chunks/fd9d1056-e74038e1fede4be0.js",
+      "static/chunks/117-1e28fe9d9f24a2c9.js",
+      "static/chunks/main-app-e8c377d95817b565.js",
+      "static/chunks/app/login/page-5441de5928bcf51c.js"
     ],
     "/uis/website/page": [
       "static/chunks/webpack-c81f7fd28659d64f.js",

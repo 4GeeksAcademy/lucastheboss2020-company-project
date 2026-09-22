@@ -1,0 +1,304 @@
+'use client';
+
+import React, { useState, useCallback } from 'react';
+import type { AnalysisResult } from '../../src/incidents/types';
+
+type AnalysisState = AnalysisResult | null;
+
+interface UploadError {
+  message: string;
+  details?: string;
+}
+
+export function IncidentAnalyzer() {
+  const [analysis, setAnalysis] = useState<AnalysisState>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<UploadError | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [expandedInvalidRecords, setExpandedInvalidRecords] = useState(false);
+  const [history, setHistory] = useState<AnalysisResult[]>([]);
+  const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
+
+  // Fetch analysis history on mount
+  React.useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const loadHistory = async () => {
+    try {
+      const response = await fetch('/api/incidents/results');
+      if (response.ok) {
+        const data = await response.json();
+        setHistory(data.analyses || []);
+      }
+    } catch (err) {
+      console.error('Failed to load analysis history:', err);
+    }
+  };
+
+  const handleFileUpload = useCallback(
+    async (file: File) => {
+      if (!file) {
+        setError({ message: 'No file selected' });
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch('/api/incidents/analyze', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError({
+            message: 'Upload failed',
+            details: data.errors?.[0] || 'Unknown error',
+          });
+          return;
+        }
+
+        if (data.analysis) {
+          setAnalysis(data.analysis);
+          setSelectedHistoryId(null);
+          // Reload history
+          await loadHistory();
+        }
+      } catch (err) {
+        setError({
+          message: 'Error uploading file',
+          details: err instanceof Error ? err.message : 'Unknown error',
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setDragOver(false);
+
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFileUpload(files[0]);
+      }
+    },
+    [handleFileUpload]
+  );
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.currentTarget.files;
+    if (files && files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  };
+
+  const handleExport = async () => {
+    if (!analysis) return;
+
+    try {
+      const response = await fetch(`/api/incidents/results/${analysis.id}/export`);
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download =
+          response.headers
+            .get('content-disposition')
+            ?.split('filename="')[1]
+            ?.replace('"', '') || `incident-analysis-${analysis.id}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (err) {
+      console.error('Export failed:', err);
+      setError({
+        message: 'Export failed',
+        details: err instanceof Error ? err.message : 'Unknown error',
+      });
+    }
+  };
+
+  const handleLoadFromHistory = async (id: string) => {
+    try {
+      const response = await fetch(`/api/incidents/results?id=${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.analyses && data.analyses.length > 0) {
+          setAnalysis(data.analyses[0]);
+          setSelectedHistoryId(id);
+          setError(null);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load analysis:', err);
+    }
+  };
+
+  const handleNewAnalysis = () => {
+    setAnalysis(null);
+    setError(null);
+    setSelectedHistoryId(null);
+  };
+
+  const displayAnalysis = analysis || (selectedHistoryId && history.find((h) => h.id === selectedHistoryId));
+
+  if (displayAnalysis) {
+    const { metrics } = displayAnalysis;
+
+    return (
+      <section>
+        <header className="page-header">
+          <span className="badge green">Incident Analysis</span>
+          <h1>Analysis Results</h1>
+          <p>File: <strong>{displayAnalysis.filename}</strong></p>
+          <div className="actions">
+            <button className="button" onClick={handleExport} type="button">Export CSV</button>
+            <button className="button secondary" onClick={handleNewAnalysis} type="button">New Analysis</button>
+          </div>
+        </header>
+
+        <div className="candidate-grid">
+          <article className="panel">
+            <h3>Summary</h3>
+            <div className="stat-group">
+              <div className="stat"><span className="stat-value">{metrics.total_processed}</span><span className="stat-label">Total Records</span></div>
+              <div className="stat"><span className="stat-value green">{metrics.valid_records}</span><span className="stat-label">Valid</span></div>
+              <div className="stat"><span className="stat-value red">{metrics.invalid_records}</span><span className="stat-label">Invalid</span></div>
+            </div>
+          </article>
+
+          <article className="panel">
+            <h3>Category Breakdown</h3>
+            <div className="stat-group">
+              <div className="stat"><span className="stat-value">{metrics.category_breakdown.complaints}</span><span className="stat-label">Complaints</span></div>
+              <div className="stat"><span className="stat-value">{metrics.category_breakdown.requests}</span><span className="stat-label">Requests</span></div>
+              <div className="stat"><span className="stat-value">{metrics.category_breakdown.operational_failures}</span><span className="stat-label">Operational Failures</span></div>
+            </div>
+          </article>
+
+          <article className="panel">
+            <h3>Status Breakdown</h3>
+            <div className="stat-group">
+              <div className="stat"><span className="stat-value">{metrics.status_breakdown.open}</span><span className="stat-label">Open</span></div>
+              <div className="stat"><span className="stat-value">{metrics.status_breakdown.closed}</span><span className="stat-label">Closed</span></div>
+              <div className="stat"><span className="stat-value">{metrics.status_breakdown.discarded}</span><span className="stat-label">Discarded</span></div>
+            </div>
+          </article>
+
+          {metrics.average_satisfaction_index !== undefined && (
+            <article className="panel">
+              <h3>Customer Satisfaction</h3>
+              <div className="stat-group">
+                <div className="stat"><span className="stat-value">{metrics.average_satisfaction_index.toFixed(2)}</span><span className="stat-label">Avg Satisfaction (0–10)</span></div>
+              </div>
+            </article>
+          )}
+        </div>
+
+        {displayAnalysis.invalid_records.length > 0 && (
+          <section className="panel" style={{ marginTop: "1rem" }}>
+            <header>
+              <h3>Invalid Records ({displayAnalysis.invalid_records.length})</h3>
+              <button className="button secondary compact-button" onClick={() => setExpandedInvalidRecords(!expandedInvalidRecords)} type="button">
+                {expandedInvalidRecords ? 'Collapse' : 'Expand'}
+              </button>
+            </header>
+            {expandedInvalidRecords && (
+              <div className="detail-grid">
+                {displayAnalysis.invalid_records.map((record) => (
+                  <article className="candidate-card" key={record.row_number}>
+                    <p><strong>Row {record.row_number}</strong> · ID: {record.incident_id}</p>
+                    <ul>
+                      {record.errors.map((error) => <li key={error}>{error}</li>)}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+      </section>
+    );
+  }
+
+  return (
+    <section>
+      <header className="page-header">
+        <span className="badge green">Incident Analysis</span>
+        <h1>Incident Analysis</h1>
+        <p>Upload and analyze customer support incident CSV files</p>
+      </header>
+
+      {error && (
+        <div className="panel message error">
+          <h3>{error.message}</h3>
+          {error.details && <p>{error.details}</p>}
+        </div>
+      )}
+
+      <section className="panel">
+        <h2>Upload CSV File</h2>
+        {loading && <p className="message loading">Analyzing incidents...</p>}
+
+        <div
+          className={`drop-zone ${dragOver ? 'drag-over' : ''}`}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+        >
+          <p>Drag and drop a CSV file here, or click to select one</p>
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleFileInputChange}
+            disabled={loading}
+            style={{ marginTop: '1rem' }}
+          />
+        </div>
+      </section>
+
+      {history.length > 0 && (
+        <section className="panel" style={{ marginTop: '1rem' }}>
+          <h2>Previous Analyses</h2>
+          <div className="detail-grid">
+            {history.map((item) => (
+              <button
+                key={item.id}
+                className={`candidate-card ${selectedHistoryId === item.id ? 'selected' : ''}`}
+                onClick={() => handleLoadFromHistory(item.id)}
+                type="button"
+                style={{ cursor: 'pointer', textAlign: 'left', width: '100%' }}
+              >
+                <p><strong>{item.filename}</strong></p>
+                <p>{new Date(item.timestamp).toLocaleString()} · {item.metrics.total_processed} records</p>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+    </section>
+  );
+}

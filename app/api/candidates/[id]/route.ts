@@ -1,12 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getCandidate, patchCandidate, replaceCandidate } from "../data";
 import type { CandidateWriteInput } from "../../../../src/candidates/types";
+import { requireAuthentication } from "../../_auth";
 
 interface RouteContext {
   params: { id: string };
 }
 
-export async function GET(_request: Request, { params }: RouteContext) {
+export async function GET(request: NextRequest, { params }: RouteContext) {
+  const authError = requireAuthentication(request);
+  if (authError) return authError;
+
   const candidate = getCandidate(params.id);
 
   if (!candidate) {
@@ -16,7 +20,10 @@ export async function GET(_request: Request, { params }: RouteContext) {
   return NextResponse.json(candidate);
 }
 
-export async function PATCH(request: Request, { params }: RouteContext) {
+export async function PATCH(request: NextRequest, { params }: RouteContext) {
+  const authError = requireAuthentication(request);
+  if (authError) return authError;
+
   const body = (await request.json()) as { status?: string; stage?: string };
   const result = patchCandidate(params.id, body);
 
@@ -27,7 +34,10 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   return NextResponse.json(result.candidate);
 }
 
-export async function PUT(request: Request, { params }: RouteContext) {
+export async function PUT(request: NextRequest, { params }: RouteContext) {
+  const authError = requireAuthentication(request);
+  if (authError) return authError;
+
   const body = (await request.json()) as CandidateWriteInput;
   const result = replaceCandidate(params.id, body);
 
